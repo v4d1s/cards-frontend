@@ -1,19 +1,32 @@
 <template>
   <div class="navbar-color">
     <BNavbar class="container">
-      <BNavbarBrand href="#">CARDS</BNavbarBrand>
+      <BNavbarBrand href="packs_list"
+        ><h2 class="logo-text">CARDS</h2></BNavbarBrand
+      >
       <BNavbarToggle target="nav-collapse" />
       <BCollapse id="nav-collapse" is-nav>
-        <BNavbarNav>
-          <BNavItem href="#">Link</BNavItem>
-        </BNavbarNav>
         <BNavbarNav class="ms-auto mb-2 mb-lg-0">
           <BNavItemDropdown right>
+            <!-- TODO проверка на наличие ползователя в куках. Если есть, то
+            выводить имя пользователя -> изменить имя или выйти. Если нет, то
+            пользователь -> войти или регистрация -->
             <template #button-content>
-              <em>Пользователь</em>
+              <div v-if="false">
+                <em>SOME NAME</em>
+              </div>
+              <div v-else>
+                <em>Пользователь</em>
+              </div>
             </template>
-            <BDropdownItem href="#">Профиль</BDropdownItem>
-            <BDropdownItem href="#">Выйти</BDropdownItem>
+            <div v-if="false">
+              <BDropdownItem href="/change_name">Изменить имя</BDropdownItem>
+              <BDropdownItem href="/logout">Выйти</BDropdownItem>
+            </div>
+            <div v-else>
+              <BDropdownItem href="/login">Войти</BDropdownItem>
+              <BDropdownItem href="/register">Регистрация</BDropdownItem>
+            </div>
           </BNavItemDropdown>
         </BNavbarNav>
       </BCollapse>
@@ -33,6 +46,11 @@
 
 .navbar-color {
   background: dodgerblue;
+  margin-bottom: 20px;
+}
+
+.logo-text {
+  margin-top: 5px;
 }
 </style>
 <script setup lang="ts"></script>

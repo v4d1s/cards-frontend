@@ -51,7 +51,6 @@ export default {};
 <style scoped>
 .register-field {
   background: #f8f8f8;
-  margin-top: 20px;
   max-width: 500px;
   padding: 25px;
 }

@@ -38,7 +38,6 @@ export default {};
 <style scoped>
 .login-field {
   background: #f8f8f8;
-  margin-top: 20px;
   max-width: 500px;
   padding: 25px;
 }
