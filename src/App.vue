@@ -1,7 +1,7 @@
 <template>
   <div class="navbar-color">
     <BNavbar class="container">
-      <BNavbarBrand href="packs_list"
+      <BNavbarBrand href="/packs_list"
         ><h2 class="logo-text">CARDS</h2></BNavbarBrand
       >
       <BNavbarToggle target="nav-collapse" />
@@ -45,7 +45,7 @@
 }
 
 .navbar-color {
-  background: dodgerblue;
+  background: #0080ff;
   margin-bottom: 20px;
 }
 
