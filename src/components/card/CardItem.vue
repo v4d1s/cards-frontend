@@ -7,7 +7,7 @@
     <BTd>
       <!--        TODO Если админ / свой пак-->
       <div v-if="true">
-        <BButton variant="warning">Изменить</BButton>
+        <BButton href="/pack/1/card/1/edit" variant="warning">Изменить</BButton>
 
         <BButton @click="deleteCardModal = true" variant="danger"
           >Удалить</BButton

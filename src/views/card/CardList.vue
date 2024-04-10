@@ -6,7 +6,9 @@
         <h4>НАЗВАНИЕ ПАКА</h4>
       </div>
       <div>
-        <BButton variant="outline-primary">Создать карточку</BButton>
+        <BButton href="/pack/1/card/new" variant="outline-primary"
+          >Создать карточку</BButton
+        >
       </div>
     </div>
     <hr />
