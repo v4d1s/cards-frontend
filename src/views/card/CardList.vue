@@ -1,32 +1,26 @@
 <template>
   <div class="container">
-    <BRow>
-      <BCol>
+    <div class="flex-start-end">
+      <div>
         <!--        TODO Название пака-->
         <h4>НАЗВАНИЕ ПАКА</h4>
-      </BCol>
-      <BCol offset="7">
+      </div>
+      <div>
         <BButton variant="outline-primary">Создать карточку</BButton>
-      </BCol>
-    </BRow>
+      </div>
+    </div>
     <hr />
-    <BRow>
-      <BCol sm="4">
-        <BFormInput placeholder="Вопрос карточки" />
-      </BCol>
-      <BCol sm="2">
+    <div class="flex-start-end">
+      <div>
+        <BFormInput class="search-input" placeholder="Вопрос карточки" />
+      </div>
+      <div>
         <BDropdown variant="outline-secondary" text="Дата">
-          <BDropdownItem href="#">По возрастанию</BDropdownItem>
+          <BDropdownItem href="#" active="true">По возрастанию</BDropdownItem>
           <BDropdownItem href="#">По убыванию</BDropdownItem>
         </BDropdown>
-      </BCol>
-      <BCol sm="1">
-        <BDropdown variant="outline-secondary" text="Оценка">
-          <BDropdownItem href="#">По возрастанию</BDropdownItem>
-          <BDropdownItem href="#">По убыванию</BDropdownItem>
-        </BDropdown>
-      </BCol>
-    </BRow>
+      </div>
+    </div>
     <hr />
 
     <!--    TODO Сард's list-->
@@ -72,5 +66,13 @@ export default {
   background: #f8f8f8;
   padding: 10px;
   margin-bottom: 10px;
+}
+.flex-start-end {
+  display: flex;
+  justify-content: space-between;
+}
+.search-input {
+  min-width: 340px;
+  max-width: 400px;
 }
 </style>
