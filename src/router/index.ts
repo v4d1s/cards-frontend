@@ -19,7 +19,7 @@ const routes: Array<RouteRecordRaw> = [
     component: RegisterView,
   },
   {
-    path: "/packs_list",
+    path: "/packs",
     name: "PacksList",
     component: PackList,
   },
@@ -44,8 +44,12 @@ const routes: Array<RouteRecordRaw> = [
     component: PackLearning,
   },
   {
+    path: "/:catchAll(.*)",
+    redirect: "/packs",
+  },
+  {
     path: "/",
-    redirect: "/packs_list",
+    redirect: "/packs",
   },
 ];
 

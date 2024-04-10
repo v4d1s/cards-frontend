@@ -6,7 +6,7 @@
     <BTd>Pack's date</BTd>
     <BTd>Pack's cards count</BTd>
     <BTd>
-      <BButton variant="success">Изучить</BButton>
+      <BButton href="/pack/1/learning" variant="success">Изучить</BButton>
 
       <!--        TODO Если админ / свой пак-->
       <div v-if="true">

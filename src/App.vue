@@ -1,7 +1,7 @@
 <template>
   <div class="navbar-color">
     <BNavbar class="container">
-      <BNavbarBrand href="/packs_list"
+      <BNavbarBrand href="/packs"
         ><h2 class="logo-text">CARDS</h2></BNavbarBrand
       >
       <BNavbarToggle target="nav-collapse" />
