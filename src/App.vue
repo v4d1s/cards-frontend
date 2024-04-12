@@ -12,16 +12,16 @@
             выводить имя пользователя -> изменить имя или выйти. Если нет, то
             пользователь -> войти или регистрация -->
             <template #button-content>
-              <div v-if="false">
-                <em>SOME NAME</em>
+              <div v-if="name">
+                <em>{{ name }}</em>
               </div>
               <div v-else>
                 <em>Пользователь</em>
               </div>
             </template>
-            <div v-if="false">
+            <div v-if="name">
               <BDropdownItem href="/change_name">Изменить имя</BDropdownItem>
-              <BDropdownItem href="/logout">Выйти</BDropdownItem>
+              <BDropdownItem @click="logOutUser">Выйти</BDropdownItem>
             </div>
             <div v-else>
               <BDropdownItem href="/login">Войти</BDropdownItem>
@@ -34,6 +34,28 @@
   </div>
   <router-view class="container"></router-view>
 </template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+import { mapActions, mapState } from "vuex";
+
+export default defineComponent({
+  methods: {
+    ...mapActions({
+      logOutUser: "authLogOut/logoutUser",
+      getName: "authLogOut/getName",
+    }),
+  },
+  computed: {
+    ...mapState({
+      name: (state: any) => state.authLogOut.name,
+    }),
+  },
+  mounted() {
+    this.name = this.getName();
+  },
+});
+</script>
 
 <style>
 #app {

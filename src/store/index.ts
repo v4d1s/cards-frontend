@@ -7,6 +7,7 @@ import { packListModule } from "@/store/pack/packListModule";
 import { packLearningModule } from "@/store/pack/packLearningModule";
 import { authLoginModule } from "@/store/auth/authLoginModule";
 import { authRegisterModule } from "@/store/auth/authRegisterModule";
+import { authLogOutModule } from "@/store/auth/authLogOutModule";
 
 export default createStore({
   modules: {
@@ -20,5 +21,6 @@ export default createStore({
 
     authLogin: authLoginModule,
     authRegister: authRegisterModule,
+    authLogOut: authLogOutModule,
   },
 });

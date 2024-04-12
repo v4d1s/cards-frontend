@@ -1,6 +1,6 @@
 <template>
   <div class="register-field">
-    <BForm>
+    <BForm @submit="registerUser">
       <BFormGroup
         id="input-group-1"
         label="Электронная почта:"
@@ -9,6 +9,7 @@
         <BFormInput
           id="input-1"
           type="email"
+          v-model="userData.email"
           placeholder="Введите почту"
           required
         />
@@ -22,6 +23,7 @@
         <BFormInput
           type="password"
           id="input-2"
+          v-model="userData.password"
           placeholder="Пароль"
           required
         />
@@ -34,6 +36,7 @@
         <BFormInput
           type="password"
           id="input-2"
+          v-model="userData.password2"
           placeholder="Пароль"
           required
         />
@@ -45,7 +48,21 @@
 </template>
 
 <script lang="ts">
-export default {};
+import { defineComponent } from "vue";
+import { mapActions, mapState } from "vuex";
+
+export default defineComponent({
+  methods: {
+    ...mapActions({
+      registerUser: "authRegister/registerUser",
+    }),
+  },
+  computed: {
+    ...mapState({
+      userData: (state: any) => state.authRegister.userData,
+    }),
+  },
+});
 </script>
 
 <style scoped>
