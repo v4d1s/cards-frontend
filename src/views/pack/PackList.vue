@@ -5,11 +5,39 @@
         <h4>Набор карточек</h4>
       </div>
       <div>
-        <BButton @click="newPackModal = true" variant="outline-primary"
+        <BButton @click="changeModal(true)" variant="outline-primary"
           >Создать набор</BButton
         >
-        <BModal centered v-model="newPackModal" title="Новый набор">
-          <BFormInput id="input-1" placeholder="Название" required />
+        <BModal
+          centered
+          v-model="newPackModal"
+          title="Новый набор"
+          hide-header-close
+          hideFooter
+        >
+          <BFormInput
+            class="col-margin"
+            v-model="newPack"
+            placeholder="Название"
+            required
+          />
+          <div class="flex-start-end">
+            <div></div>
+            <div>
+              <BRow>
+                <BCol>
+                  <BButton @click="changeModal(false)" variant="outline-primary"
+                    >Создать</BButton
+                  >
+                </BCol>
+                <BCol>
+                  <BButton @click="changeModal(false)" variant="outline-danger"
+                    >Отменить</BButton
+                  >
+                </BCol>
+              </BRow>
+            </div>
+          </div>
         </BModal>
       </div>
     </div>
@@ -74,7 +102,7 @@
     <BPagination
       align="center"
       :total-rows="1337"
-      :per-page="1337"
+      :per-page="10"
       first-text="<<"
       prev-text="<"
       next-text=">"
@@ -85,15 +113,24 @@
 
 <script lang="ts">
 import PackItem from "@/components/pack/PackItem.vue";
+import { defineComponent } from "vue";
+import { mapActions, mapState } from "vuex";
 
-export default {
+export default defineComponent({
   components: { PackItem },
-  data() {
-    return {
-      newPackModal: false,
-    };
+  methods: {
+    ...mapActions({
+      changeModal: "packList/changeModal",
+    }),
   },
-};
+  computed: {
+    ...mapState({
+      newPackModal: (state: any) => state.packList.newPackModal,
+      newPack: (state: any) => state.packList.newPack,
+      pack: (state: any) => state.packList.packs,
+    }),
+  },
+});
 </script>
 
 <style scoped>
