@@ -2,19 +2,23 @@
   <BForm>
     <BFormGroup id="input-group-1">
       <div class="flex-start-end">
-        <h6>Введите вопрос:</h6>
+        <h5>Введите вопрос:</h5>
+        <div class="hint-text">"\ " — пробел, "\\ " — новая строка</div>
       </div>
       <textarea
         id="input-1"
         placeholder="Вопрос"
         class="textarea-input"
+        v-model="question"
         required
       ></textarea>
+      <hr />
+      <vue-latex :expression="question" display-mode />
     </BFormGroup>
     <hr />
     <BFormGroup id="input-group-2">
       <div class="flex-start-end">
-        <h6>Введите ответ:</h6>
+        <h5>Введите ответ:</h5>
         <BFormSelect
           class="select-size"
           id="input-2"
@@ -27,9 +31,12 @@
         <textarea
           id="input-2"
           placeholder="Ответ"
+          v-model="answer"
           class="textarea-input"
           required
         ></textarea>
+        <hr />
+        <vue-latex :expression="answer" display-mode />
       </div>
       <div v-if="inputSelect == 1">
         <input
@@ -68,6 +75,8 @@ export default defineComponent({
       ],
       inputSelect: 0,
       url: "",
+      question: "",
+      answer: "",
     };
   },
   methods: {
@@ -83,6 +92,9 @@ export default defineComponent({
 .textarea-input {
   width: 100%;
   min-height: 50px;
+}
+.hint-text {
+  color: rgba(0, 0, 0, 0.5);
 }
 .flex-start-end {
   display: flex;

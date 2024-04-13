@@ -8,9 +8,6 @@
       <BCollapse id="nav-collapse" is-nav>
         <BNavbarNav class="ms-auto mb-2 mb-lg-0">
           <BNavItemDropdown right>
-            <!-- TODO проверка на наличие ползователя в куках. Если есть, то
-            выводить имя пользователя -> изменить имя или выйти. Если нет, то
-            пользователь -> войти или регистрация -->
             <template #button-content>
               <div v-if="name">
                 <em>{{ name }}</em>
