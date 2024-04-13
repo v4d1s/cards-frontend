@@ -21,43 +21,33 @@
         </BCol>
       </div>
       <div>
-        <!--        TODO для пользователей. для админа-->
-        <div v-if="true">
-          <BRow>
-            <BCol class="col-margin">
-              <BDropdown variant="outline-secondary" text="Дата">
-                <BDropdownItem href="#" active="true"
-                  >По возрастанию</BDropdownItem
-                >
-                <BDropdownItem href="#">По убыванию</BDropdownItem>
-              </BDropdown>
-            </BCol>
-            <BCol class="col-margin">
-              <BDropdown variant="outline-secondary" text="Количество карточек">
-                <BDropdownItem href="#" :active="true"
-                  >По возрастанию</BDropdownItem
-                >
-                <BDropdownItem href="#">По убыванию</BDropdownItem>
-              </BDropdown>
-            </BCol>
-            <BCol class="col-margin">
-              <BButtonGroup>
-                <BButton :pressed="true" variant="outline-secondary"
-                  >Свои</BButton
-                >
-                <BButton variant="outline-secondary">Общие</BButton>
-              </BButtonGroup>
-            </BCol>
-          </BRow>
-        </div>
-        <div v-else>
+        <BRow>
           <BCol class="col-margin">
+            <BDropdown variant="outline-secondary" text="Дата">
+              <BDropdownItem>По убыванию</BDropdownItem>
+              <BDropdownItem>По возрастанию</BDropdownItem>
+            </BDropdown>
+          </BCol>
+          <BCol class="col-margin">
+            <BDropdown variant="outline-secondary" text="Количество карточек">
+              <BDropdownItem>По убыванию</BDropdownItem>
+              <BDropdownItem>По возрастанию</BDropdownItem>
+            </BDropdown>
+          </BCol>
+          <BCol v-if="true" class="col-margin">
             <BButtonGroup>
-              <BButton :pressed="true" variant="outline-secondary">Все</BButton>
+              <BButton variant="outline-secondary">Свои</BButton>
               <BButton variant="outline-secondary">Общие</BButton>
             </BButtonGroup>
           </BCol>
-        </div>
+          <BCol v-else class="col-margin">
+            <BButtonGroup>
+              <BButton variant="outline-secondary">Все </BButton>
+              <BButton variant="outline-secondary">Общие</BButton>
+              <BButton variant="outline-secondary">Приватные</BButton>
+            </BButtonGroup>
+          </BCol>
+        </BRow>
       </div>
     </div>
     <hr />
