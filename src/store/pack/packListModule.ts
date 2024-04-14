@@ -1,6 +1,7 @@
 import axios from "axios";
 import router from "@/router";
 import { useCookies } from "vue3-cookies";
+import { jwtDecode } from "jwt-decode";
 
 export const packListModule = {
   state: () => ({
@@ -42,6 +43,29 @@ export const packListModule = {
   actions: {
     changeModal({ state, commit }: any, data: boolean) {
       commit("setNewPackModal", data);
+    },
+    updateNewPack({ state, commit }: any) {
+      commit("setNewPack", state.newPack);
+    },
+    async createPack({ commit, state }: any, newPack: string) {
+      console.log(
+        Object(jwtDecode(state.cookies.cookies.get("access_token"))).id
+      );
+      console.log(newPack);
+      // await axios({
+      //   url: "http://localhost:3000/pack",
+      //   method: "post",
+      //   data: {
+      //     name: state.newPack,
+      //     userId: Object(jwtDecode(state.cookies.cookies.get("access_token")))
+      //       .userId,
+      //   },
+      //   headers: {
+      //     Authorization: "Bearer " + state.cookies.cookies.get("access_token"),
+      //   },
+      // });
+      // commit("setNewPack", "");
+      // commit("setNewPackModal", false);
     },
     async getPacksDefault({ commit, state }: any) {
       const response = await axios({

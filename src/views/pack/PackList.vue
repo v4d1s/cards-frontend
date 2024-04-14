@@ -5,6 +5,7 @@
         <h4>Набор карточек</h4>
       </div>
       <div>
+        <!--        TODO проверка на пустоту во всех модальных окнах!!!-->
         <BButton @click="changeModal(true)" variant="outline-primary"
           >Создать набор</BButton
         >
@@ -17,13 +18,15 @@
         >
           <BFormInput
             class="col-margin"
+            id="input-1"
             v-model="newPack"
             placeholder="Название"
             required
+            @input="updateNewPack"
           />
           <div class="flex-start-end">
             <div>
-              <BButton @click="changeModal(false)" variant="outline-primary"
+              <BButton @click="createPack(newPack)" variant="outline-primary"
                 >Создать</BButton
               >
             </div>
@@ -118,9 +121,10 @@ export default defineComponent({
   methods: {
     ...mapActions({
       changeModal: "packList/changeModal",
-      getPacksDefault: "packList/getPacksDefault",
+      updateNewPack: "packList/updateNewPack",
+      createPack: "packList/createPack",
 
-      setPack: "packItem/setPack",
+      getPacksDefault: "packList/getPacksDefault",
     }),
   },
   computed: {

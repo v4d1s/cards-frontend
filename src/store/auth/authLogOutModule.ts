@@ -1,6 +1,6 @@
 import { useCookies } from "vue3-cookies";
 import router from "@/router";
-import { jwtDecode, JwtPayload } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 export const authLogOutModule = {
   state: () => ({
