@@ -22,20 +22,15 @@
             required
           />
           <div class="flex-start-end">
-            <div></div>
             <div>
-              <BRow>
-                <BCol>
-                  <BButton @click="changeModal(false)" variant="outline-primary"
-                    >Создать</BButton
-                  >
-                </BCol>
-                <BCol>
-                  <BButton @click="changeModal(false)" variant="outline-danger"
-                    >Отменить</BButton
-                  >
-                </BCol>
-              </BRow>
+              <BButton @click="changeModal(false)" variant="outline-primary"
+                >Создать</BButton
+              >
+            </div>
+            <div>
+              <BButton @click="changeModal(false)" variant="outline-danger"
+                >Отменить</BButton
+              >
             </div>
           </div>
         </BModal>
@@ -92,16 +87,18 @@
         </BTr>
       </BThead>
       <BTbody>
-        <pack-item />
-        <pack-item />
-        <pack-item />
+        <pack-item v-for="pack in packs" :key="pack.id" :pack="pack" />
       </BTbody>
     </BTableSimple>
+    <h3 class="error-color" v-if="packs.length == 0">
+      Наборы с карточками отсутствуют...
+    </h3>
 
     <!--    TODO Pagination-->
     <BPagination
+      v-else
       align="center"
-      :total-rows="1337"
+      :total-rows="rows"
       :per-page="10"
       first-text="<<"
       prev-text="<"
@@ -121,20 +118,32 @@ export default defineComponent({
   methods: {
     ...mapActions({
       changeModal: "packList/changeModal",
+      getPacksDefault: "packList/getPacksDefault",
+
+      setPack: "packItem/setPack",
     }),
   },
   computed: {
     ...mapState({
       newPackModal: (state: any) => state.packList.newPackModal,
       newPack: (state: any) => state.packList.newPack,
-      pack: (state: any) => state.packList.packs,
+      packs: (state: any) => state.packList.packs,
+      rows: (state: any) => state.packList.row,
     }),
+  },
+  mounted() {
+    this.getPacksDefault();
   },
 });
 </script>
 
 <style scoped>
 .table-color {
+  background: #f8f8f8;
+  padding: 10px;
+  margin-bottom: 0;
+}
+.error-color {
   background: #f8f8f8;
   padding: 10px;
   margin-bottom: 10px;
