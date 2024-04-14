@@ -1,5 +1,6 @@
 import { useCookies } from "vue3-cookies";
 import router from "@/router";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 export const authLogOutModule = {
   state: () => ({
@@ -13,18 +14,21 @@ export const authLogOutModule = {
   },
   actions: {
     async logoutUser({ state }: any) {
-      state.cookies.cookies.remove("name");
       state.cookies.cookies.remove("access_token");
 
       await router.push("/login");
       router.go(0);
     },
     getName({ state, commit }: any) {
-      const name = state.cookies.cookies.get("name");
-      if (name) {
-        commit("setName", name);
-      } else {
-        commit("setName", false);
+      if (state.cookies.cookies.get("access_token")) {
+        const token = Object(
+          jwtDecode(state.cookies.cookies.get("access_token"))
+        );
+        if (token) {
+          commit("setName", token.name);
+        } else {
+          commit("setName", "");
+        }
       }
     },
   },

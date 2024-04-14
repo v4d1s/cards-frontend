@@ -28,9 +28,8 @@ export const authLoginModule = {
           },
         });
 
-        // console.log(log.data);
         state.cookies.cookies.set("access_token", log.data.access_token);
-        state.cookies.cookies.set("name", log.data.name.toString());
+        console.log(log.data.error);
 
         await router.push("/packs");
         router.go(0);

@@ -36,7 +36,7 @@ export const authRegisterModule = {
         console.log(error.message);
       }
       commit("setUserData", { email: "", password: "", password2: "" });
-      router.push("/login");
+      await router.push("/login");
     },
   },
   namespaced: true,

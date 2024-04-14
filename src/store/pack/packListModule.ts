@@ -53,9 +53,9 @@ export const packListModule = {
           "&packName=" +
           state.packName,
         method: "get",
-        headers: {
-          Authorization: "Bearer " + state.cookies.cookies.get("access_token"),
-        },
+        // headers: {
+        //   Authorization: "Bearer " + state.cookies.cookies.get("access_token"),
+        // },
       });
       commit("setPacks", response.data.cardPacks);
       commit("setRow", response.data.cardPacksTotalCount);
