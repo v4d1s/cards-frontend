@@ -11,18 +11,9 @@
       <BButton :href="'/pack/' + pack.id + '/learning'" variant="success"
         >Изучить</BButton
       >
-
       <!--        TODO Если админ / свой пак-->
       <div v-if="true">
-        <BButton
-          @click="
-            changeModalEdit({
-              payload: true,
-              oldName: pack.name,
-              newPrivate: false,
-            })
-          "
-          variant="warning"
+        <BButton @click="modalEdit = !modalEdit" variant="warning"
           >Изменить</BButton
         >
         <BModal
@@ -31,48 +22,40 @@
           title="Изменить набор"
           hide-header-close
           hideFooter
+          @hide.prevent
         >
-          <BFormInput
-            v-model="newName"
-            class="col-margin"
-            placeholder="Название"
-            required
-          />
-          <BFormCheckbox v-model="newPrivate" @click="changeNewPrivate">
-            Изменить приватность?
-          </BFormCheckbox>
-          <div class="flex-start-end">
-            <div>
-              <!--                  TODO функционал кнопки-->
-              <BButton
-                @click="
-                  changeModalEdit({
-                    payload: false,
-                    oldName: '',
-                    newPrivate: false,
-                  })
-                "
-                variant="outline-primary"
-                >Изменить</BButton
-              >
+          <BForm @submit="editPack">
+            <BFormInput
+              v-model="newName"
+              type="text"
+              class="col-margin"
+              placeholder="Название"
+              required
+            />
+            <BFormCheckbox
+              switch
+              v-model="newPrivate"
+              variant="outline-primary"
+              @click="newPrivate = !newPrivate"
+            >
+              Изменить видимость</BFormCheckbox
+            >
+            <div class="flex-start-end">
+              <div>
+                <BButton type="submit" variant="outline-primary"
+                  >Изменить</BButton
+                >
+              </div>
+              <div>
+                <BButton @click="closeModalEdit" variant="outline-danger"
+                  >Отменить</BButton
+                >
+              </div>
             </div>
-            <div>
-              <BButton
-                @click="
-                  changeModalEdit({
-                    payload: false,
-                    oldName: '',
-                    newPrivate: false,
-                  })
-                "
-                variant="outline-danger"
-                >Отменить</BButton
-              >
-            </div>
-          </div>
+          </BForm>
         </BModal>
 
-        <BButton @click="changeModalDelete(true)" variant="danger"
+        <BButton @click="modalDelete = !modalDelete" variant="danger"
           >Удалить</BButton
         >
         <BModal
@@ -80,6 +63,7 @@
           hideFooter
           centered
           v-model="modalDelete"
+          @hide.prevent
           title="Удалить набор?"
         >
           <p>
@@ -89,16 +73,13 @@
           </p>
           <div class="flex-start-end">
             <div>
-              <!--                  TODO функционал кнопки-->
-              <BButton
-                @click="changeModalDelete(false)"
-                variant="outline-danger"
+              <BButton @click="deletePack" variant="outline-danger"
                 >Удалить</BButton
               >
             </div>
             <div>
               <BButton
-                @click="changeModalDelete(false)"
+                @click="modalDelete = !modalDelete"
                 variant="outline-secondary"
                 >Отменить</BButton
               >
@@ -112,7 +93,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { mapActions, mapState } from "vuex";
+import { useCookies } from "vue3-cookies";
 
 export default defineComponent({
   props: {
@@ -121,20 +102,33 @@ export default defineComponent({
       required: true,
     },
   },
-  methods: {
-    ...mapActions({
-      changeModalDelete: "packItem/changeModalDelete",
-      changeModalEdit: "packItem/changeModalEdit",
-      changeNewPrivate: "packItem/changeNewPrivate",
-    }),
+  data() {
+    return {
+      modalEdit: false,
+      modalDelete: false,
+
+      newName: this.pack.name,
+      newPrivate: false,
+
+      cookies: useCookies(),
+      isLogin: false,
+      isAuthor: false,
+    };
   },
-  computed: {
-    ...mapState({
-      modalDelete: (state: any) => state.packItem.modalDelete,
-      modalEdit: (state: any) => state.packItem.modalEdit,
-      newName: (state: any) => state.packItem.newName,
-      newPrivate: (state: any) => state.packItem.newPrivate,
-    }),
+  methods: {
+    // TODO функционал кнопок
+    editPack() {
+      console.log("1");
+    },
+    deletePack() {
+      console.log("1");
+    },
+    closeModalEdit() {
+      this.modalEdit = false;
+      this.newPrivate = false;
+      this.newName = this.pack.name;
+    },
+    // TODO функция на наличие в куках (добавить в куки пункт isAdmin)
   },
 });
 </script>

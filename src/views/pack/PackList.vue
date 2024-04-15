@@ -16,26 +16,28 @@
           hide-header-close
           hideFooter
         >
-          <BFormInput
-            class="col-margin"
-            id="input-1"
-            v-model="newPack"
-            placeholder="Название"
-            required
-            @input="updateNewPack"
-          />
-          <div class="flex-start-end">
-            <div>
-              <BButton @click="createPack(newPack)" variant="outline-primary"
-                >Создать</BButton
-              >
+          <BForm @submit="createPack(newPack)">
+            <BFormInput
+              class="col-margin"
+              id="input-1"
+              v-model="newPack"
+              placeholder="Название"
+              required
+              @input="updateNewPack"
+            />
+            <div class="flex-start-end">
+              <div>
+                <BButton type="submit" variant="outline-primary"
+                  >Создать</BButton
+                >
+              </div>
+              <div>
+                <BButton @click="changeModal(false)" variant="outline-danger"
+                  >Отменить</BButton
+                >
+              </div>
             </div>
-            <div>
-              <BButton @click="changeModal(false)" variant="outline-danger"
-                >Отменить</BButton
-              >
-            </div>
-          </div>
+          </BForm>
         </BModal>
       </div>
     </div>
@@ -117,6 +119,11 @@ import { defineComponent } from "vue";
 import { mapActions, mapState } from "vuex";
 
 export default defineComponent({
+  data() {
+    return {
+      newPack: "",
+    };
+  },
   components: { PackItem },
   methods: {
     ...mapActions({
@@ -130,7 +137,6 @@ export default defineComponent({
   computed: {
     ...mapState({
       newPackModal: (state: any) => state.packList.newPackModal,
-      newPack: (state: any) => state.packList.newPack,
       packs: (state: any) => state.packList.packs,
       rows: (state: any) => state.packList.row,
     }),

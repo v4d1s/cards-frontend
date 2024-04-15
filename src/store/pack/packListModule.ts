@@ -7,11 +7,11 @@ export const packListModule = {
   state: () => ({
     cookies: useCookies(),
     newPackModal: false,
-    newPack: "",
 
     packs: [],
     row: 0,
 
+    visible: "general",
     packName: "",
     sort: "0updated",
     userId: -1,
@@ -44,33 +44,26 @@ export const packListModule = {
     changeModal({ state, commit }: any, data: boolean) {
       commit("setNewPackModal", data);
     },
-    updateNewPack({ state, commit }: any) {
-      commit("setNewPack", state.newPack);
-    },
     async createPack({ commit, state }: any, newPack: string) {
-      console.log(
-        Object(jwtDecode(state.cookies.cookies.get("access_token"))).id
-      );
-      console.log(newPack);
-      // await axios({
-      //   url: "http://localhost:3000/pack",
-      //   method: "post",
-      //   data: {
-      //     name: state.newPack,
-      //     userId: Object(jwtDecode(state.cookies.cookies.get("access_token")))
-      //       .userId,
-      //   },
-      //   headers: {
-      //     Authorization: "Bearer " + state.cookies.cookies.get("access_token"),
-      //   },
-      // });
-      // commit("setNewPack", "");
-      // commit("setNewPackModal", false);
+      await axios({
+        url: "http://localhost:3000/pack",
+        method: "post",
+        data: {
+          name: newPack,
+          userId: Object(jwtDecode(state.cookies.cookies.get("access_token")))
+            .id,
+        },
+        headers: {
+          Authorization: "Bearer " + state.cookies.cookies.get("access_token"),
+        },
+      });
+      commit("setNewPackModal", false);
     },
+    // TODO изменить вывод на общие (в конце)
     async getPacksDefault({ commit, state }: any) {
       const response = await axios({
         url:
-          "http://localhost:3000/pack?page=" +
+          "http://localhost:3000/pack/all?page=" +
           state.page +
           "&sortPacks=" +
           state.sort +
@@ -81,8 +74,8 @@ export const packListModule = {
         //   Authorization: "Bearer " + state.cookies.cookies.get("access_token"),
         // },
       });
-      commit("setPacks", response.data.cardPacks);
-      commit("setRow", response.data.cardPacksTotalCount);
+      commit("setPacks", response.data.rows);
+      commit("setRow", response.data.count);
     },
     async getPacksByUser({ commit, state }: any) {
       const packs = await axios({
