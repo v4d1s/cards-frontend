@@ -11,6 +11,8 @@ export const packListModule = {
     packs: [],
     row: 0,
 
+    isLoading: true,
+
     visible: "general",
     packName: "",
     sort: "0updated",
@@ -39,10 +41,20 @@ export const packListModule = {
     setRow(state: any, row: number) {
       state.row = row;
     },
+    setIsLoading(state: any) {
+      state.isLoading = false;
+    },
   },
   actions: {
     changeModal({ state, commit }: any, data: boolean) {
       commit("setNewPackModal", data);
+    },
+    async changePage({ state, commit, dispatch }: any, newPage: number) {
+      commit("setPage", newPage);
+
+      // TODO использовать другую функцию
+      // TODO написать функцию, выбирающую пак в зависимотсти из исходных данных
+      dispatch("getPacksDefault");
     },
     async createPack({ commit, state }: any, newPack: string) {
       await axios({
@@ -58,6 +70,7 @@ export const packListModule = {
         },
       });
       commit("setNewPackModal", false);
+      await router.go(0);
     },
     // TODO изменить вывод на общие (в конце)
     async getPacksDefault({ commit, state }: any) {
@@ -76,6 +89,7 @@ export const packListModule = {
       });
       commit("setPacks", response.data.rows);
       commit("setRow", response.data.count);
+      commit("setIsLoading");
     },
     async getPacksByUser({ commit, state }: any) {
       const packs = await axios({

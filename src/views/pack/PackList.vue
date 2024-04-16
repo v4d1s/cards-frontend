@@ -5,7 +5,6 @@
         <h4>Набор карточек</h4>
       </div>
       <div>
-        <!--        TODO проверка на пустоту во всех модальных окнах!!!-->
         <BButton @click="changeModal(true)" variant="outline-primary"
           >Создать набор</BButton
         >
@@ -92,19 +91,21 @@
         </BTr>
       </BThead>
       <BTbody>
+        <h4 v-if="isLoading">Идет загрузка...</h4>
         <pack-item v-for="pack in packs" :key="pack.id" :pack="pack" />
       </BTbody>
     </BTableSimple>
-    <h3 class="error-color" v-if="packs.length == 0">
+    <h3 class="error-color" v-if="packs.length == 0 && !isLoading">
       Наборы с карточками отсутствуют...
     </h3>
 
-    <!--    TODO Pagination-->
     <BPagination
       v-else
       align="center"
       :total-rows="rows"
       :per-page="10"
+      v-model="currentPage"
+      @click="changePage(currentPage)"
       first-text="<<"
       prev-text="<"
       next-text=">"
@@ -122,6 +123,7 @@ export default defineComponent({
   data() {
     return {
       newPack: "",
+      currentPage: 1,
     };
   },
   components: { PackItem },
@@ -129,7 +131,10 @@ export default defineComponent({
     ...mapActions({
       changeModal: "packList/changeModal",
       updateNewPack: "packList/updateNewPack",
+
       createPack: "packList/createPack",
+
+      changePage: "packList/changePage",
 
       getPacksDefault: "packList/getPacksDefault",
     }),
@@ -139,6 +144,8 @@ export default defineComponent({
       newPackModal: (state: any) => state.packList.newPackModal,
       packs: (state: any) => state.packList.packs,
       rows: (state: any) => state.packList.row,
+      isLoading: (state: any) => state.packList.isLoading,
+      page: (state: any) => state.packList.page,
     }),
   },
   mounted() {
