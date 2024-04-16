@@ -7,13 +7,25 @@
     <BTd>{{ pack.createdAt.split("T")[0] }}</BTd>
     <BTd>{{ pack.cardsCount }}</BTd>
     <BTd>
-      <!--      TODO если залогинился, сделать иначе-->
-      <BButton :href="'/pack/' + pack.id + '/learning'" variant="success"
+      <BButton
+        :href="'/pack/' + pack.id + '/learning'"
+        variant="success"
+        v-if="currentUserId > 0"
+        class="margin-button"
         >Изучить</BButton
       >
-      <!--        TODO Если админ / свой пак-->
-      <div v-if="true">
-        <BButton @click="modalEdit = !modalEdit" variant="warning"
+      <BButton
+        :href="'/login'"
+        variant="success"
+        v-if="currentUserId == 0"
+        class="margin-button"
+        >Войдите, чтобы изучить</BButton
+      >
+      <div v-if="isAdmin || currentUserId == pack.userId">
+        <BButton
+          class="margin-button"
+          @click="modalEdit = !modalEdit"
+          variant="warning"
           >Изменить</BButton
         >
         <BModal
@@ -55,7 +67,10 @@
           </BForm>
         </BModal>
 
-        <BButton @click="modalDelete = !modalDelete" variant="danger"
+        <BButton
+          @click="modalDelete = !modalDelete"
+          variant="danger"
+          class="margin-button"
           >Удалить</BButton
         >
         <BModal
@@ -94,6 +109,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useCookies } from "vue3-cookies";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+import router from "@/router";
 
 export default defineComponent({
   props: {
@@ -111,24 +129,60 @@ export default defineComponent({
       newPrivate: false,
 
       cookies: useCookies(),
-      isLogin: false,
-      isAuthor: false,
+      currentUserId: 0,
+      isAdmin: false,
     };
   },
   methods: {
-    // TODO функционал кнопок
-    editPack() {
-      console.log("1");
+    async editPack() {
+      let newPrivate = false;
+      if (this.newPrivate) {
+        newPrivate = !this.pack.isPrivate;
+      }
+      await axios({
+        url: "http://localhost:3000/pack/" + this.pack.id,
+        method: "patch",
+        data: {
+          name: this.newName,
+          isPrivate: newPrivate,
+        },
+        headers: {
+          Authorization: "Bearer " + this.cookies.cookies.get("access_token"),
+        },
+      });
+
+      await router.go(0);
     },
-    deletePack() {
-      console.log("1");
+    async deletePack() {
+      await axios({
+        url: "http://localhost:3000/pack/" + this.pack.id,
+        method: "delete",
+        headers: {
+          Authorization: "Bearer " + this.cookies.cookies.get("access_token"),
+        },
+      });
+      await router.go(0);
     },
     closeModalEdit() {
       this.modalEdit = false;
       this.newPrivate = false;
       this.newName = this.pack.name;
     },
-    // TODO функция на наличие в куках (добавить в куки пункт isAdmin)
+    setCurrentUserId() {
+      if (this.cookies.cookies.get("access_token")) {
+        const token = Object(
+          jwtDecode(this.cookies.cookies.get("access_token"))
+        );
+        this.currentUserId = token.id;
+        // TODO uncomment
+        // if (token.isAdmin) {
+        //   this.isAdmin = true;
+        // }
+      }
+    },
+  },
+  mounted() {
+    this.setCurrentUserId();
   },
 });
 </script>
@@ -145,5 +199,8 @@ export default defineComponent({
   background: #f8f8f8;
   padding: 10px;
   margin-bottom: 10px;
+}
+.margin-button {
+  margin: 3px;
 }
 </style>
