@@ -17,6 +17,7 @@ export const packListModule = {
     packName: "",
     sort: "0updated",
     userId: -1,
+    isAdmin: false,
     page: 1,
   }),
   mutations: {
@@ -35,6 +36,9 @@ export const packListModule = {
     setUserId(state: any, userId: number) {
       state.userId = userId;
     },
+    setIsAdmin(state: any, isAdmin: boolean) {
+      state.isAdmin = isAdmin;
+    },
     setPage(state: any, page: number) {
       state.page = page;
     },
@@ -44,36 +48,59 @@ export const packListModule = {
     setIsLoading(state: any) {
       state.isLoading = false;
     },
+    setVisibility(state: any, visibility: string) {
+      state.visible = visibility;
+    },
   },
   actions: {
     changeModal({ state, commit }: any, data: boolean) {
       commit("setNewPackModal", data);
     },
-    async changePage({ state, commit, dispatch }: any, newPage: number) {
+    changePage({ commit, dispatch }: any, newPage: number) {
       commit("setPage", newPage);
-
-      // TODO использовать другую функцию
-      // TODO написать функцию, выбирающую пак в зависимотсти из исходных данных
       dispatch("getPacksDefault");
     },
-    async createPack({ commit, state }: any, newPack: string) {
-      await axios({
-        url: "http://localhost:3000/pack",
-        method: "post",
-        data: {
-          name: newPack,
-          userId: Object(jwtDecode(state.cookies.cookies.get("access_token")))
-            .id,
-        },
-        headers: {
-          Authorization: "Bearer " + state.cookies.cookies.get("access_token"),
-        },
-      });
-      commit("setNewPackModal", false);
-      await router.go(0);
+    changePackName({ commit, dispatch }: any, search: string) {
+      commit("setPackName", search);
+      dispatch("getPacks");
     },
-    // TODO изменить вывод на общие (в конце)
-    async getPacksDefault({ commit, state }: any) {
+    changeVisibility({ commit, dispatch }: any, visibility: string) {
+      commit("setPackName", "");
+      commit("setVisibility", visibility);
+      dispatch("getPacks");
+    },
+    changeSort({ commit, dispatch }: any, sort: string) {
+      commit("setSort", sort);
+      dispatch("getPacks");
+    },
+
+    getPacks({ dispatch, state }: any) {
+      if (state.visible == "general") {
+        dispatch("getPacksGeneral");
+      }
+      if (state.visible == "private") {
+        dispatch("getPacksPrivate");
+      }
+      if (state.visible == "all") {
+        dispatch("getPacksAll");
+      }
+    },
+    async getPacksGeneral({ commit, state }: any) {
+      const response = await axios({
+        url:
+          "http://localhost:3000/pack/?page=" +
+          state.page +
+          "&sortPacks=" +
+          state.sort +
+          "&packName=" +
+          state.packName,
+        method: "get",
+      });
+      commit("setPacks", response.data.cardPacks);
+      commit("setRow", response.data.cardPacksTotalCount);
+      commit("setIsLoading");
+    },
+    async getPacksAll({ commit, state }: any) {
       const response = await axios({
         url:
           "http://localhost:3000/pack/all?page=" +
@@ -83,20 +110,48 @@ export const packListModule = {
           "&packName=" +
           state.packName,
         method: "get",
-        // headers: {
-        //   Authorization: "Bearer " + state.cookies.cookies.get("access_token"),
-        // },
       });
       commit("setPacks", response.data.rows);
       commit("setRow", response.data.count);
-      commit("setIsLoading");
     },
-    async getPacksByUser({ commit, state }: any) {
-      const packs = await axios({
-        url: "http://localhost:3000/auth/login",
+    async getPacksPrivate({ commit, state }: any) {
+      const response = await axios({
+        url:
+          "http://localhost:3000/pack/?page=" +
+          state.page +
+          "&sortPacks=" +
+          state.sort +
+          "&packName=" +
+          state.packName +
+          "&user_id=" +
+          state.userId,
         method: "get",
       });
-      commit("setPacks", packs);
+      commit("setPacks", response.data.cardPacks);
+      commit("setRow", response.data.cardPacksTotalCount);
+    },
+
+    async createPack({ commit, state }: any, newPack: string) {
+      await axios({
+        url: "http://localhost:3000/pack",
+        method: "post",
+        data: {
+          name: newPack,
+          userId: state.userId,
+        },
+        headers: {
+          Authorization: "Bearer " + state.cookies.cookies.get("access_token"),
+        },
+      });
+      commit("setNewPackModal", false);
+      await router.go(0);
+    },
+    getUserId({ commit, state }: any) {
+      const token = state.cookies.cookies.get("access_token");
+      if (token) {
+        const id: number = Object(jwtDecode(token)).id;
+        commit("setUserId", id);
+      }
     },
   },
   namespaced: true,

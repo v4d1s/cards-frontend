@@ -43,28 +43,95 @@
     <hr />
     <div class="flex-start-end">
       <div>
-        <BCol class="col-margin">
-          <BFormInput class="search-input" placeholder="Название набора" />
-        </BCol>
+        <BRow>
+          <BCol class="col-margin">
+            <BFormInput
+              class="search-input"
+              placeholder="Название набора"
+              v-model="search"
+            />
+          </BCol>
+          <BCol class="col-margin">
+            <BButton variant="outline-secondary" @click="changePackName(search)"
+              >Поиск</BButton
+            >
+          </BCol>
+          <BCol class="col-margin">
+            <BButton
+              variant="outline-secondary"
+              @click="
+                search = '';
+                changePackName('');
+              "
+              >Очистить</BButton
+            >
+          </BCol>
+        </BRow>
       </div>
       <div>
         <BRow>
           <BCol class="col-margin">
             <BDropdown variant="outline-secondary" text="Дата">
-              <BDropdownItem>По убыванию</BDropdownItem>
-              <BDropdownItem>По возрастанию</BDropdownItem>
+              <BDropdownItem active v-if="sort == '0updated'"
+                >По убыванию</BDropdownItem
+              >
+              <BDropdownItem v-else @click="changeSort('0updated')"
+                >По убыванию</BDropdownItem
+              >
+
+              <BDropdownItem active v-if="sort == '1updated'"
+                >По возрастанию</BDropdownItem
+              >
+              <BDropdownItem v-else @click="changeSort('1updated')"
+                >По возрастанию</BDropdownItem
+              >
             </BDropdown>
           </BCol>
           <BCol class="col-margin">
             <BDropdown variant="outline-secondary" text="Количество карточек">
-              <BDropdownItem>По убыванию</BDropdownItem>
-              <BDropdownItem>По возрастанию</BDropdownItem>
+              <BDropdownItem active v-if="sort == '0cardsCount'"
+                >По убыванию</BDropdownItem
+              >
+              <BDropdownItem v-else @click="changeSort('0cardsCount')"
+                >По убыванию</BDropdownItem
+              >
+
+              <BDropdownItem active v-if="sort == '1cardsCount'"
+                >По возрастанию</BDropdownItem
+              >
+              <BDropdownItem v-else @click="changeSort('1cardsCount')"
+                >По возрастанию</BDropdownItem
+              >
             </BDropdown>
           </BCol>
+          <!--  TODO проверка на isAdmin + на наличие userId -->
           <BCol v-if="true" class="col-margin">
             <BButtonGroup>
-              <BButton variant="outline-secondary">Свои</BButton>
-              <BButton variant="outline-secondary">Общие</BButton>
+              <BButton
+                :pressed="'true'"
+                v-if="visible == 'private'"
+                variant="outline-secondary"
+                >Свои</BButton
+              >
+              <BButton
+                v-else
+                variant="outline-secondary"
+                @click="changeVisibility('private')"
+                >Свои</BButton
+              >
+
+              <BButton
+                :pressed="'true'"
+                v-if="visible == 'general'"
+                variant="outline-secondary"
+                >Общие</BButton
+              >
+              <BButton
+                v-else
+                variant="outline-secondary"
+                @click="changeVisibility('general')"
+                >Общие</BButton
+              >
             </BButtonGroup>
           </BCol>
           <BCol v-else class="col-margin">
@@ -79,7 +146,6 @@
     </div>
     <hr />
 
-    <!--    TODO Pack's list-->
     <BTableSimple hover responsive class="table-color">
       <BThead>
         <BTr>
@@ -123,6 +189,7 @@ export default defineComponent({
   data() {
     return {
       newPack: "",
+      search: "",
       currentPage: 1,
     };
   },
@@ -131,12 +198,15 @@ export default defineComponent({
     ...mapActions({
       changeModal: "packList/changeModal",
       updateNewPack: "packList/updateNewPack",
-
       createPack: "packList/createPack",
 
+      changePackName: "packList/changePackName",
+      changeVisibility: "packList/changeVisibility",
+      changeSort: "packList/changeSort",
       changePage: "packList/changePage",
 
-      getPacksDefault: "packList/getPacksDefault",
+      getPacks: "packList/getPacks",
+      getUserId: "packList/getUserId",
     }),
   },
   computed: {
@@ -146,10 +216,13 @@ export default defineComponent({
       rows: (state: any) => state.packList.row,
       isLoading: (state: any) => state.packList.isLoading,
       page: (state: any) => state.packList.page,
+      visible: (state: any) => state.packList.visible,
+      sort: (state: any) => state.packList.sort,
     }),
   },
   mounted() {
-    this.getPacksDefault();
+    this.getPacks();
+    this.getUserId();
   },
 });
 </script>
