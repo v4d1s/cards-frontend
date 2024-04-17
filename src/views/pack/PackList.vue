@@ -104,8 +104,7 @@
               >
             </BDropdown>
           </BCol>
-          <!--  TODO проверка на isAdmin + на наличие userId -->
-          <BCol v-if="true" class="col-margin">
+          <BCol v-if="userId > 0 && !isAdmin" class="col-margin">
             <BButtonGroup>
               <BButton
                 :pressed="'true'"
@@ -134,11 +133,46 @@
               >
             </BButtonGroup>
           </BCol>
-          <BCol v-else class="col-margin">
+          <BCol v-if="isAdmin" class="col-margin">
             <BButtonGroup>
-              <BButton variant="outline-secondary">Все </BButton>
-              <BButton variant="outline-secondary">Общие</BButton>
-              <BButton variant="outline-secondary">Приватные</BButton>
+              <BButton
+                :pressed="'true'"
+                v-if="visible == 'general'"
+                variant="outline-secondary"
+                >Все</BButton
+              >
+              <BButton
+                v-else
+                variant="outline-secondary"
+                @click="changeVisibility('all')"
+                >Все</BButton
+              >
+
+              <BButton
+                :pressed="'true'"
+                v-if="visible == 'private_all'"
+                variant="outline-secondary"
+                >Приватные</BButton
+              >
+              <BButton
+                v-else
+                variant="outline-secondary"
+                @click="changeVisibility('private_all')"
+                >Приватные</BButton
+              >
+
+              <BButton
+                :pressed="'true'"
+                v-if="visible == 'general'"
+                variant="outline-secondary"
+                >Общие</BButton
+              >
+              <BButton
+                v-else
+                variant="outline-secondary"
+                @click="changeVisibility('general')"
+                >Общие</BButton
+              >
             </BButtonGroup>
           </BCol>
         </BRow>
@@ -218,6 +252,8 @@ export default defineComponent({
       page: (state: any) => state.packList.page,
       visible: (state: any) => state.packList.visible,
       sort: (state: any) => state.packList.sort,
+      userId: (state: any) => state.packList.userId,
+      isAdmin: (state: any) => state.packList.isAdmin,
     }),
   },
   mounted() {

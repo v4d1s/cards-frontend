@@ -84,6 +84,9 @@ export const packListModule = {
       if (state.visible == "all") {
         dispatch("getPacksAll");
       }
+      if (state.visible == "private_all") {
+        dispatch("getPacksPrivateAll");
+      }
     },
     async getPacksGeneral({ commit, state }: any) {
       const response = await axios({
@@ -130,6 +133,20 @@ export const packListModule = {
       commit("setPacks", response.data.cardPacks);
       commit("setRow", response.data.cardPacksTotalCount);
     },
+    async getPacksPrivateAll({ commit, state }: any) {
+      const response = await axios({
+        url:
+          "http://localhost:3000/pack/private?page=" +
+          state.page +
+          "&sortPacks=" +
+          state.sort +
+          "&packName=" +
+          state.packName,
+        method: "get",
+      });
+      commit("setPacks", response.data.cardPacks);
+      commit("setRow", response.data.cardPacksTotalCount);
+    },
 
     async createPack({ commit, state }: any, newPack: string) {
       await axios({
@@ -150,7 +167,9 @@ export const packListModule = {
       const token = state.cookies.cookies.get("access_token");
       if (token) {
         const id: number = Object(jwtDecode(token)).id;
+        const isAdmin: boolean = Object(jwtDecode(token)).isAdmin;
         commit("setUserId", id);
+        commit("setIsAdmin", isAdmin);
       }
     },
   },
