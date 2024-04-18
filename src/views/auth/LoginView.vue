@@ -30,6 +30,9 @@
 
     <hr />
     <p>Нет аккаунта? <a href="/register">Зарегистрируйтесь!</a></p>
+    <BToast class="container" v-model="haveError">
+      {{ error }}
+    </BToast>
   </div>
 </template>
 
@@ -46,6 +49,8 @@ export default defineComponent({
   computed: {
     ...mapState({
       userData: (state: any) => state.authLogin.userData,
+      haveError: (state: any) => state.authLogin.haveError,
+      error: (state: any) => state.authLogin.error,
     }),
   },
 });

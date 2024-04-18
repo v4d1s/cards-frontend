@@ -8,6 +8,8 @@ export const authLoginModule = {
       email: "",
       password: "",
     },
+    haveError: false,
+    error: "",
     cookies: useCookies(),
   }),
   mutations: {
@@ -15,29 +17,34 @@ export const authLoginModule = {
       state.userData.email = userData.email;
       state.userData.password = userData.password;
     },
+    setError(state: any, error: string) {
+      state.error = error;
+    },
+    setHaveError(state: any, hasError: boolean) {
+      state.haveError = hasError;
+    },
   },
   actions: {
     async loginUser({ state, commit }: any) {
-      try {
-        const log = await axios({
-          url: "http://localhost:3000/auth/login",
-          method: "post",
-          data: {
-            email: state.userData.email,
-            password: state.userData.password,
-          },
-        });
+      commit("setHaveError", false);
+      const log = await axios({
+        url: "http://localhost:3000/auth/login",
+        method: "post",
+        data: {
+          email: state.userData.email,
+          password: state.userData.password,
+        },
+      });
 
+      if (log.data.access_token != undefined) {
         state.cookies.cookies.set("access_token", log.data.access_token);
-        console.log(log.data.error);
-
         await router.push("/packs");
         router.go(0);
-      } catch (error: any) {
-        // TODO обработка ошибок
-        console.log(error.message);
+      } else {
+        commit("setError", log.data.error);
+        commit("setHaveError", true);
+        commit("setUserData", { email: "", password: "" });
       }
-      commit("setUserData", { email: "", password: "" });
     },
   },
   namespaced: true,

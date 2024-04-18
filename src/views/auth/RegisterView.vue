@@ -44,6 +44,9 @@
 
       <BButton type="submit" variant="primary">Регистрация</BButton>
     </BForm>
+    <BToast class="container" v-model="haveError">
+      {{ error }}
+    </BToast>
   </div>
 </template>
 
@@ -60,6 +63,8 @@ export default defineComponent({
   computed: {
     ...mapState({
       userData: (state: any) => state.authRegister.userData,
+      haveError: (state: any) => state.authRegister.haveError,
+      error: (state: any) => state.authRegister.error,
     }),
   },
 });
