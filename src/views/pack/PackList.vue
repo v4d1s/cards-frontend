@@ -5,7 +5,10 @@
         <h4>Набор карточек</h4>
       </div>
       <div>
-        <BButton @click="changeModal(true)" variant="outline-primary"
+        <BButton
+          v-if="userId != -1"
+          @click="changeModal(true)"
+          variant="outline-primary"
           >Создать набор</BButton
         >
         <BModal
