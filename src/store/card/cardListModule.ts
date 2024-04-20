@@ -63,6 +63,7 @@ export const cardListModule = {
     },
     changePackName({ commit, dispatch }: any, search: string) {
       commit("setCardName", search);
+      commit("setPage", 1);
       dispatch("getCards");
     },
     changeSort({ commit, dispatch }: any, sort: string) {

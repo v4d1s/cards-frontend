@@ -25,7 +25,12 @@
             />
           </BCol>
           <BCol class="col-margin">
-            <BButton variant="outline-secondary" @click="changeCardName(search)"
+            <BButton
+              variant="outline-secondary"
+              @click="
+                currentPage = 1;
+                changeCardName(search);
+              "
               >Поиск</BButton
             >
           </BCol>
@@ -34,6 +39,7 @@
               variant="outline-secondary"
               @click="
                 search = '';
+                currentPage = 1;
                 changeCardName('');
               "
               >Очистить</BButton

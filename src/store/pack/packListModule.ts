@@ -62,6 +62,7 @@ export const packListModule = {
     },
     changePackName({ commit, dispatch }: any, search: string) {
       commit("setPackName", search);
+      commit("setPage", 1);
       dispatch("getPacks");
     },
     changeVisibility({ commit, dispatch }: any, visibility: string) {
