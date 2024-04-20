@@ -1,5 +1,5 @@
 <template>
-  <BForm>
+  <BForm @submit="changeCard">
     <BFormGroup id="input-group-1">
       <div class="flex-start-end">
         <h5>Введите вопрос:</h5>
@@ -9,11 +9,11 @@
         id="input-1"
         placeholder="Вопрос"
         class="textarea-input"
-        v-model="question"
+        v-model="userData.question"
         required
       ></textarea>
       <hr />
-      <vue-latex :expression="question" display-mode />
+      <vue-latex :expression="userData.question" display-mode />
     </BFormGroup>
     <hr />
     <BFormGroup id="input-group-2">
@@ -24,40 +24,51 @@
           id="input-2"
           :options="inputMode"
           required
-          v-model="inputSelect"
+          v-model="userData.inputSelect"
         />
       </div>
-      <div v-if="inputSelect == 0">
+      <div v-if="userData.inputSelect == 0">
         <textarea
           id="input-2"
           placeholder="Ответ"
-          v-model="answer"
+          v-model="userData.answer"
           class="textarea-input"
           required
         ></textarea>
         <hr />
-        <vue-latex :expression="answer" display-mode />
+        <vue-latex :expression="userData.answer" display-mode />
       </div>
-      <div v-if="inputSelect == 1">
+      <div v-if="userData.inputSelect == 1">
+        <div v-if="userData.url" class="preview-image">
+          <div>
+            <BImg :src="userData.url" fluid />
+          </div>
+          <div>
+            <BButton variant="outline-danger" @click="userData.url = ''"
+              >Изменить фото</BButton
+            >
+          </div>
+        </div>
         <input
+          v-else
           type="file"
-          accept="image/jpeg, image/png, image/jpg"
+          accept="image/*"
           @change="onFileChange($event)"
           required
         />
-        <div v-if="url" class="preview-image">
-          <img :src="url" />
-        </div>
       </div>
     </BFormGroup>
     <hr />
     <BRow>
-      <!--      TODO href-->
       <BCol>
-        <BButton type="submit" variant="success">Готово</BButton>
+        <BButton v-if="userId != 0" type="submit" variant="success"
+          >Готово</BButton
+        >
       </BCol>
       <BCol>
-        <BButton href="/pack/1" variant="danger">Отменить</BButton>
+        <BButton :href="'/pack/' + $route.params.packId" variant="danger"
+          >Отменить</BButton
+        >
       </BCol>
     </BRow>
   </BForm>
@@ -65,25 +76,34 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { mapActions, mapState } from "vuex";
 
 export default defineComponent({
-  data() {
-    return {
-      inputMode: [
-        { text: "Текст (LaTeX)", value: 0 },
-        { text: "Фото", value: 1 },
-      ],
-      inputSelect: 0,
-      url: "",
-      question: "",
-      answer: "",
-    };
+  props: {
+    oldCard: {
+      type: Object,
+      default: null,
+    },
+  },
+  computed: {
+    ...mapState({
+      userData: (state: any) => state.cardInput.userData,
+      userId: (state: any) => state.cardInput.userId,
+
+      inputMode: (state: any) => state.cardInput.inputMode,
+    }),
   },
   methods: {
-    onFileChange(e: any) {
-      const file = e.target.files[0];
-      this.url = URL.createObjectURL(file);
-    },
+    ...mapActions({
+      setUserAndPack: "cardInput/setUserAndPack",
+      setData: "cardInput/setData",
+      onFileChange: "cardInput/onFileChange",
+      changeCard: "cardInput/changeCard",
+    }),
+  },
+  mounted() {
+    this.setUserAndPack(parseInt(this.$route.params.packId[0]));
+    this.setData(this.oldCard);
   },
 });
 </script>
@@ -92,6 +112,7 @@ export default defineComponent({
 .textarea-input {
   width: 100%;
   min-height: 50px;
+  max-height: 600px;
 }
 .hint-text {
   color: rgba(0, 0, 0, 0.5);
@@ -105,7 +126,6 @@ export default defineComponent({
   margin-bottom: 10px;
 }
 .preview-image {
-  max-height: 500px;
   margin-top: 10px;
 }
 </style>

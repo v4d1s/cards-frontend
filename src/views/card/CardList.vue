@@ -77,7 +77,7 @@
       </BTbody>
     </BTableSimple>
     <h3 class="error-color" v-if="cards.length == 0 && !isLoading">
-      Наборы с карточками отсутствуют...
+      Карточки отсутствуют...
     </h3>
 
     <BPagination
@@ -136,7 +136,6 @@ export default defineComponent({
   },
   mounted() {
     this.getUserAndPack(this.$route.params.packId);
-    this.getCards();
   },
 });
 </script>
@@ -144,7 +143,7 @@ export default defineComponent({
 .table-color {
   background: #f8f8f8;
   padding: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 0;
 }
 .flex-start-end {
   display: flex;

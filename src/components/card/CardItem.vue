@@ -1,10 +1,17 @@
 <template>
   <BTr>
-    <BTh>{{ card.question }}</BTh>
-    <!--    TODO добавить фото-->
-    <BTd>{{ card.answer }}</BTd>
+    <BTh><vue-latex :expression="card.question" /></BTh>
+    <BTd v-if="card.image == ''"><vue-latex :expression="card.answer" /></BTd>
+    <BTd v-else>
+      <BImg
+        class="image"
+        fluid
+        :src="'http://localhost:3000/' + card.image"
+        @click="redirect(card.image)"
+      />
+    </BTd>
     <BTd>{{ card.createdAt.split("T")[0] }}</BTd>
-    <BTd>{{ card.grade.grade / card.grade.shots }}</BTd>
+    <BTd>{{ card.gradesList[0].grade / card.gradesList[0].shots }}</BTd>
     <BTd>
       <div v-if="isAdmin || currentUserId == card.userId">
         <BButton
@@ -73,6 +80,9 @@ export default defineComponent({
     };
   },
   methods: {
+    redirect(id: string) {
+      window.location.href = "http://localhost:3000/" + id;
+    },
     async deleteCard() {
       await axios({
         url:
@@ -105,4 +115,8 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.image {
+  max-height: 300px;
+}
+</style>

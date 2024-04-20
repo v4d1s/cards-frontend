@@ -93,7 +93,7 @@ export const cardListModule = {
       commit("setIsLoading");
     },
 
-    async getUserAndPack({ commit, state }: any, packId: number) {
+    async getUserAndPack({ commit, state, dispatch }: any, packId: number) {
       const token = state.cookies.cookies.get("access_token");
       if (token) {
         const id: number = Object(jwtDecode(token)).id;
@@ -107,8 +107,10 @@ export const cardListModule = {
         method: "get",
       });
       commit("setAuthorId", response.data.userId);
-      commit("setPackId", packId);
+      commit("setPackId", response.data.id);
       commit("setPackName", response.data.name);
+
+      dispatch("getCards");
     },
   },
   namespaced: true,
