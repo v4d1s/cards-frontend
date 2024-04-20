@@ -2,11 +2,13 @@
   <div class="container">
     <div class="flex-start-end">
       <div>
-        <!--        TODO Название пака-->
-        <h4>НАЗВАНИЕ ПАКА</h4>
+        <h4>{{ packName }}</h4>
       </div>
       <div>
-        <BButton href="/pack/1/card/new" variant="outline-primary"
+        <BButton
+          v-if="isAdmin || userId == authorId"
+          :href="'/pack/' + packId + '/card/new'"
+          variant="outline-primary"
           >Создать карточку</BButton
         >
       </div>
@@ -14,18 +16,51 @@
     <hr />
     <div class="flex-start-end">
       <div>
-        <BFormInput class="search-input" placeholder="Вопрос карточки" />
+        <BRow>
+          <BCol class="col-margin">
+            <BFormInput
+              class="search-input"
+              placeholder="Название карточки"
+              v-model="search"
+            />
+          </BCol>
+          <BCol class="col-margin">
+            <BButton variant="outline-secondary" @click="changeCardName(search)"
+              >Поиск</BButton
+            >
+          </BCol>
+          <BCol class="col-margin">
+            <BButton
+              variant="outline-secondary"
+              @click="
+                search = '';
+                changeCardName('');
+              "
+              >Очистить</BButton
+            >
+          </BCol>
+        </BRow>
       </div>
       <div>
-        <BDropdown variant="outline-secondary" text="Дата">
-          <BDropdownItem href="#" active="true">По возрастанию</BDropdownItem>
-          <BDropdownItem href="#">По убыванию</BDropdownItem>
+        <BDropdown class="col-margin" variant="outline-secondary" text="Дата">
+          <BDropdownItem active v-if="sort == '0updated'"
+            >По убыванию</BDropdownItem
+          >
+          <BDropdownItem v-else @click="changeSort('0updated')"
+            >По убыванию</BDropdownItem
+          >
+
+          <BDropdownItem active v-if="sort == '1updated'"
+            >По возрастанию</BDropdownItem
+          >
+          <BDropdownItem v-else @click="changeSort('1updated')"
+            >По возрастанию</BDropdownItem
+          >
         </BDropdown>
       </div>
     </div>
     <hr />
 
-    <!--    TODO Сард's list-->
     <BTableSimple hover responsive class="table-color">
       <BThead>
         <BTr>
@@ -37,17 +72,21 @@
         </BTr>
       </BThead>
       <BTbody>
-        <card-item />
-        <card-item />
-        <card-item />
+        <h4 v-if="isLoading">Идет загрузка...</h4>
+        <card-item v-for="card in cards" :key="card.id" :card="card" />
       </BTbody>
     </BTableSimple>
+    <h3 class="error-color" v-if="cards.length == 0 && !isLoading">
+      Наборы с карточками отсутствуют...
+    </h3>
 
-    <!--    TODO Pagination-->
     <BPagination
+      v-else
       align="center"
-      :total-rows="1337"
-      :per-page="1337"
+      :total-rows="rows"
+      :per-page="10"
+      v-model="currentPage"
+      @click="changePage(currentPage)"
       first-text="<<"
       prev-text="<"
       next-text=">"
@@ -58,10 +97,48 @@
 
 <script lang="ts">
 import CardItem from "@/components/card/CardItem.vue";
+import { defineComponent } from "vue";
+import { mapActions, mapState } from "vuex";
 
-export default {
+export default defineComponent({
   components: { CardItem },
-};
+  data() {
+    return {
+      search: "",
+      currentPage: 1,
+    };
+  },
+  methods: {
+    ...mapActions({
+      changeCardName: "cardList/changePackName",
+      changeSort: "cardList/changeSort",
+      changePage: "cardList/changePage",
+
+      getCards: "cardList/getCards",
+      getUserAndPack: "cardList/getUserAndPack",
+    }),
+  },
+  computed: {
+    ...mapState({
+      cards: (state: any) => state.cardList.cards,
+      rows: (state: any) => state.cardList.row,
+      isLoading: (state: any) => state.cardList.isLoading,
+      page: (state: any) => state.cardList.page,
+      sort: (state: any) => state.cardList.sort,
+
+      packName: (state: any) => state.cardList.packName,
+      packId: (state: any) => state.cardList.packId,
+      authorId: (state: any) => state.cardList.authorId,
+
+      userId: (state: any) => state.cardList.userId,
+      isAdmin: (state: any) => state.cardList.isAdmin,
+    }),
+  },
+  mounted() {
+    this.getUserAndPack(this.$route.params.packId);
+    this.getCards();
+  },
+});
 </script>
 <style scoped>
 .table-color {
@@ -73,8 +150,16 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+.error-color {
+  background: #f8f8f8;
+  padding: 10px;
+  margin-bottom: 10px;
+}
 .search-input {
-  min-width: 340px;
+  min-width: 200px;
   max-width: 400px;
+}
+.col-margin {
+  margin-bottom: 10px;
 }
 </style>

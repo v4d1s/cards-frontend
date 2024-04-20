@@ -58,7 +58,7 @@ export const packListModule = {
     },
     changePage({ commit, dispatch }: any, newPage: number) {
       commit("setPage", newPage);
-      dispatch("getPacksDefault");
+      dispatch("getPacks");
     },
     changePackName({ commit, dispatch }: any, search: string) {
       commit("setPackName", search);
@@ -136,7 +136,8 @@ export const packListModule = {
     async getPacksPrivateAll({ commit, state }: any) {
       const response = await axios({
         url:
-          "http://localhost:3000/pack/private?page=" +
+          "http://localhost:3000/pack/private" +
+          "?page=" +
           state.page +
           "&sortPacks=" +
           state.sort +

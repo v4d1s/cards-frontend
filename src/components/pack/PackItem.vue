@@ -174,10 +174,9 @@ export default defineComponent({
           jwtDecode(this.cookies.cookies.get("access_token"))
         );
         this.currentUserId = token.id;
-        // TODO uncomment
-        // if (token.isAdmin) {
-        //   this.isAdmin = true;
-        // }
+        if (token.isAdmin) {
+          this.isAdmin = true;
+        }
       }
     },
   },
