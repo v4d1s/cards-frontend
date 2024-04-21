@@ -2,8 +2,8 @@
   <div class="navbar-color">
     <BNavbar class="container">
       <BNavbarBrand href="/packs"
-        ><h2 class="logo-text">CARDS</h2></BNavbarBrand
-      >
+        ><BImg fluid class="logo" :src="require(`../public/logo.png`)"
+      /></BNavbarBrand>
       <BNavbarToggle target="nav-collapse" />
       <BCollapse id="nav-collapse" is-nav>
         <BNavbarNav class="ms-auto mb-2 mb-lg-0">
@@ -67,8 +67,8 @@ export default defineComponent({
   margin-bottom: 20px;
 }
 
-.logo-text {
-  margin-top: 5px;
+.logo {
+  width: 300px;
 }
 </style>
 <script setup lang="ts"></script>
