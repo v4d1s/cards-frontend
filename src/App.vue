@@ -17,7 +17,6 @@
               </div>
             </template>
             <div v-if="name">
-              <BDropdownItem href="/change_name">Изменить имя</BDropdownItem>
               <BDropdownItem @click="logOutUser">Выйти</BDropdownItem>
             </div>
             <div v-else>
