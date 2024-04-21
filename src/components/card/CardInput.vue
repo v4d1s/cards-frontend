@@ -39,9 +39,9 @@
         <vue-latex :expression="userData.answer" display-mode />
       </div>
       <div v-if="userData.inputSelect == 1">
-        <div v-if="userData.url" class="preview-image">
+        <div v-if="userData.url">
           <div>
-            <BImg :src="userData.url" fluid />
+            <BImg class="preview-image" :src="userData.url" fluid />
           </div>
           <div>
             <BButton variant="outline-danger" @click="userData.url = ''"
@@ -127,5 +127,6 @@ export default defineComponent({
 }
 .preview-image {
   margin-top: 10px;
+  max-height: 800px;
 }
 </style>
