@@ -20,7 +20,9 @@ export const cardInputModule = {
     userId: 0,
     packId: 0,
     cookies: useCookies(),
-    oldCard: false,
+
+    oldCardId: 0,
+    oldCard: null,
   }),
   mutations: {
     setUserData(state: any, newUserData: any) {
@@ -35,8 +37,11 @@ export const cardInputModule = {
     setImage(state: any, image: any) {
       state.image = image;
     },
-    setOldCard(state: any) {
-      state.oldCard = true;
+    setOldCardId(state: any, oldCardId: number) {
+      state.oldCardId = oldCardId;
+    },
+    setOldCard(state: any, oldCard: any) {
+      state.oldCard = oldCard;
     },
     setNewFile(state: any, newFile: any) {
       state.newFile = newFile;
@@ -53,25 +58,36 @@ export const cardInputModule = {
         commit("setUserId", token.id);
       }
     },
-    setData({ commit }: any, oldCard: any) {
-      if (oldCard != null) {
-        commit("setCardId", oldCard.id);
-        commit("setOldCard");
+    async setData({ state, commit }: any, oldCardId: number) {
+      if (oldCardId != 0) {
+        commit("setOldCardId", oldCardId);
 
-        if (oldCard.image != "") {
+        const card = await axios({
+          url:
+            "http://localhost:3000/pack/" +
+            state.packId +
+            "/card/" +
+            oldCardId +
+            "/?userId=" +
+            state.userId,
+          method: "get",
+        });
+        commit("setOldCard", card.data);
+
+        if (state.oldCard.image != "") {
           commit("setUserData", {
-            question: oldCard.question,
+            question: state.oldCard.question,
             inputSelect: 1,
-            url: oldCard.image,
+            url: "http://localhost:3000/" + state.oldCard.image,
             answer: "",
           });
-          commit("setImage", oldCard.image);
+          commit("setImage", state.oldCard.image);
         } else {
           commit("setUserData", {
-            question: oldCard.question,
+            question: state.oldCard.question,
             inputSelect: 0,
             url: "",
-            answer: oldCard.answer,
+            answer: state.oldCard.answer,
           });
         }
       }
@@ -83,13 +99,70 @@ export const cardInputModule = {
     },
     async changeCard({ state, commit }: any) {
       if (state.oldCard) {
-        // своеборазная проверка на новое фото
-        // edit card
-      } else {
-        if (state.userData.url != "") {
-          commit("setImage", state.newFile);
+        if (state.userData.inputSelect == 1) {
+          if (state.userData.url != state.oldCard.image) {
+            commit("setImage", state.newFile);
+            await axios({
+              url:
+                "http://localhost:3000/pack/" +
+                state.packId +
+                "/card/" +
+                state.oldCardId,
+              method: "patch",
+              headers: {
+                Authorization:
+                  "Bearer " + state.cookies.cookies.get("access_token"),
+                "Content-Type": "multipart/form-data",
+              },
+              data: {
+                question: state.userData.question,
+                answer: state.userData.answer,
+                image: state.newFile,
+              },
+            });
+          } else {
+            await axios({
+              url:
+                "http://localhost:3000/pack/" +
+                state.packId +
+                "/card/" +
+                state.oldCardId,
+              method: "patch",
+              headers: {
+                Authorization:
+                  "Bearer " + state.cookies.cookies.get("access_token"),
+                "Content-Type": "multipart/form-data",
+              },
+              data: {
+                question: state.userData.question,
+                answer: state.userData.answer,
+                image: state.oldCard.image,
+              },
+            });
+          }
+        } else {
+          await axios({
+            url:
+              "http://localhost:3000/pack/" +
+              state.packId +
+              "/card/" +
+              state.oldCardId,
+            method: "patch",
+            headers: {
+              Authorization:
+                "Bearer " + state.cookies.cookies.get("access_token"),
+            },
+            data: {
+              question: state.userData.question,
+              answer: state.userData.answer,
+            },
+          });
         }
-        if (state.image != "") {
+      } else {
+        if (state.userData.inputSelect == 1) {
+          if (state.userData.url != "") {
+            commit("setImage", state.newFile);
+          }
           await axios({
             url: "http://localhost:3000/pack/" + state.packId + "/card/new",
             method: "post",
@@ -122,8 +195,8 @@ export const cardInputModule = {
             },
           });
         }
-        await router.push("/pack/" + state.packId);
       }
+      await router.push("/pack/" + state.packId);
     },
   },
   namespaced: true,

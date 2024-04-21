@@ -80,9 +80,9 @@ import { mapActions, mapState } from "vuex";
 
 export default defineComponent({
   props: {
-    oldCard: {
-      type: Object,
-      default: null,
+    oldCardId: {
+      type: Number,
+      default: 0,
     },
   },
   computed: {
@@ -103,7 +103,7 @@ export default defineComponent({
   },
   mounted() {
     this.setUserAndPack(parseInt(this.$route.params.packId[0]));
-    this.setData(this.oldCard);
+    this.setData(this.oldCardId);
   },
 });
 </script>
