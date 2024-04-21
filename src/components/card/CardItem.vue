@@ -87,9 +87,11 @@ export default defineComponent({
       await axios({
         url:
           "http://localhost:3000/pack/" +
-          this.card.id +
+          this.card.packId +
           "/card/" +
-          this.card.id,
+          this.card.id +
+          "/?userId=" +
+          this.card.userId,
         method: "delete",
         headers: {
           Authorization: "Bearer " + this.cookies.cookies.get("access_token"),
