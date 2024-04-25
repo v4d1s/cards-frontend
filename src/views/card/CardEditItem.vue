@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <card-input :oldCardId="parseInt($route.params.cardId[0])" />
+    <card-input :oldCardId="$route.params.cardId" />
   </div>
 </template>
 

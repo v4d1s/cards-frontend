@@ -62,7 +62,6 @@ export const cardInputModule = {
       if (oldCardId != 0) {
         commit("setOldCardId", oldCardId);
 
-        // TODO пересмотреть edit
         const card = await axios({
           url:
             "http://localhost:3000/pack/" +
