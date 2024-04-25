@@ -10,7 +10,7 @@
       <BButton
         :href="'/pack/' + pack.id + '/learning'"
         variant="success"
-        v-if="currentUserId > 0"
+        v-if="currentUserId > 0 && pack.cardsCount > 0"
         class="margin-button"
         >Изучить</BButton
       >

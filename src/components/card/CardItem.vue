@@ -11,7 +11,9 @@
       />
     </BTd>
     <BTd>{{ card.createdAt.split("T")[0] }}</BTd>
-    <BTd>{{ card.gradesList[0].grade / card.gradesList[0].shots }}</BTd>
+    <BTd>{{
+      +(card.gradesList[0].grade / card.gradesList[0].shots).toFixed(2)
+    }}</BTd>
     <BTd>
       <div v-if="isAdmin || currentUserId == card.userId">
         <BButton
@@ -120,5 +122,9 @@ export default defineComponent({
 <style scoped>
 .image {
   max-height: 300px;
+}
+.flex-start-end {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

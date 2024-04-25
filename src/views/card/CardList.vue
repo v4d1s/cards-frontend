@@ -5,12 +5,23 @@
         <h4>{{ packName }}</h4>
       </div>
       <div>
-        <BButton
-          v-if="isAdmin || userId == authorId"
-          :href="'/pack/' + packId + '/card/new'"
-          variant="outline-primary"
-          >Создать карточку</BButton
-        >
+        <BRow>
+          <BCol v-if="cards.length > 0" md="4" class="col-margin">
+            <BButton
+              :href="'/pack/' + packId + '/learning'"
+              variant="outline-primary"
+              >Изучение</BButton
+            >
+          </BCol>
+          <BCol md="8">
+            <BButton
+              v-if="isAdmin || userId == authorId"
+              :href="'/pack/' + packId + '/card/new'"
+              variant="outline-primary"
+              >Создать карточку</BButton
+            >
+          </BCol>
+        </BRow>
       </div>
     </div>
     <hr />
@@ -48,21 +59,23 @@
         </BRow>
       </div>
       <div>
-        <BDropdown class="col-margin" variant="outline-secondary" text="Дата">
-          <BDropdownItem active v-if="sort == '0updated'"
-            >По убыванию</BDropdownItem
-          >
-          <BDropdownItem v-else @click="changeSort('0updated')"
-            >По убыванию</BDropdownItem
-          >
+        <BCol>
+          <BDropdown class="col-margin" variant="outline-secondary" text="Дата">
+            <BDropdownItem active v-if="sort == '0updated'"
+              >По убыванию</BDropdownItem
+            >
+            <BDropdownItem v-else @click="changeSort('0updated')"
+              >По убыванию</BDropdownItem
+            >
 
-          <BDropdownItem active v-if="sort == '1updated'"
-            >По возрастанию</BDropdownItem
-          >
-          <BDropdownItem v-else @click="changeSort('1updated')"
-            >По возрастанию</BDropdownItem
-          >
-        </BDropdown>
+            <BDropdownItem active v-if="sort == '1updated'"
+              >По возрастанию</BDropdownItem
+            >
+            <BDropdownItem v-else @click="changeSort('1updated')"
+              >По возрастанию</BDropdownItem
+            >
+          </BDropdown>
+        </BCol>
       </div>
     </div>
     <hr />

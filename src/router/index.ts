@@ -8,6 +8,7 @@ import CardEditItem from "@/views/card/CardEditItem.vue";
 import PackLearning from "@/views/pack/PackLearning.vue";
 
 const routes: Array<RouteRecordRaw> = [
+  // TODO проверка, что userId, packId существуют
   {
     path: "/login",
     name: "login",
