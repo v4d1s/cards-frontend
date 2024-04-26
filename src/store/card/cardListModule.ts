@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useCookies } from "vue3-cookies";
 import { jwtDecode } from "jwt-decode";
+import router from "@/router";
 
 export const cardListModule = {
   state: () => ({
@@ -107,9 +108,24 @@ export const cardListModule = {
         url: "http://localhost:3000/pack/" + packId,
         method: "get",
       });
+
+      if (response.data == "") {
+        router.go(-1);
+        return;
+      }
+
       commit("setAuthorId", response.data.userId);
       commit("setPackId", response.data.id);
       commit("setPackName", response.data.name);
+
+      if (
+        response.data.isPrivate &&
+        !state.isAdmin &&
+        state.userId != state.authorId
+      ) {
+        router.go(-1);
+        return;
+      }
 
       dispatch("getCards");
     },

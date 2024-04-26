@@ -4,7 +4,7 @@
       ><a :href="'/pack/' + pack.id">{{ pack.name }}</a></BTh
     >
     <BTd>{{ pack.user.name }}</BTd>
-    <BTd>{{ pack.createdAt.split("T")[0] }}</BTd>
+    <BTd>{{ pack.updatedAt.split("T")[0] }}</BTd>
     <BTd>{{ pack.cardsCount }}</BTd>
     <BTd>
       <BButton
@@ -41,12 +41,14 @@
               v-model="newName"
               type="text"
               class="col-margin"
+              maxlength="64"
               placeholder="Название"
               required
             />
             <BFormCheckbox
               switch
               v-model="newPrivate"
+              v-if="isAdmin"
               variant="outline-primary"
               @click="newPrivate = !newPrivate"
             >
@@ -135,16 +137,18 @@ export default defineComponent({
   },
   methods: {
     async editPack() {
-      let newPrivate = false;
+      let privateNew = true;
       if (this.newPrivate) {
-        newPrivate = !this.pack.isPrivate;
+        privateNew = !this.pack.isPrivate;
+      } else {
+        privateNew = this.pack.isPrivate;
       }
       await axios({
         url: "http://localhost:3000/pack/" + this.pack.id,
         method: "patch",
         data: {
           name: this.newName,
-          isPrivate: newPrivate,
+          isPrivate: privateNew,
         },
         headers: {
           Authorization: "Bearer " + this.cookies.cookies.get("access_token"),

@@ -48,8 +48,17 @@ export const cardInputModule = {
     },
   },
   actions: {
-    setUserAndPack({ state, commit }: any, packId: number) {
-      commit("setPackId", packId);
+    async setUserAndPack({ state, commit }: any, packId: number) {
+      const response = await axios({
+        url: "http://localhost:3000/pack/" + packId,
+        method: "get",
+      });
+      if (response.data == "") {
+        router.go(-1);
+        return;
+      }
+
+      commit("setPackId", parseInt(String(packId)));
 
       if (state.cookies.cookies.get("access_token")) {
         const token = Object(
@@ -60,18 +69,25 @@ export const cardInputModule = {
     },
     async setData({ state, commit }: any, oldCardId: number) {
       if (oldCardId != 0) {
-        commit("setOldCardId", oldCardId);
+        commit("setOldCardId", parseInt(String(oldCardId)));
 
         const card = await axios({
           url:
             "http://localhost:3000/pack/" +
             state.packId +
             "/card/" +
-            oldCardId +
+            state.oldCardId +
             "/?userId=" +
             state.userId,
           method: "get",
         });
+
+        if (card.data == "") {
+          router.go(-1);
+          return;
+        }
+        commit("setPackId", card.data.packId);
+
         commit("setOldCard", card.data);
 
         if (state.oldCard.image != "") {

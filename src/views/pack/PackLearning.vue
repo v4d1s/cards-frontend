@@ -140,9 +140,9 @@ export default defineComponent({
       modal: (state: any) => state.packLearning.modal,
     }),
   },
-  mounted() {
-    this.getUserAndPack(this.$route.params.packId);
-    this.getCards();
+  async mounted() {
+    this.$nextTick(await this.getUserAndPack(this.$route.params.packId));
+    this.$nextTick(await this.getCards());
   },
 });
 </script>

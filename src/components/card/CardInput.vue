@@ -101,9 +101,9 @@ export default defineComponent({
       changeCard: "cardInput/changeCard",
     }),
   },
-  mounted() {
-    this.setUserAndPack(parseInt(this.$route.params.packId[0]));
-    this.setData(this.oldCardId);
+  async mounted() {
+    this.$nextTick(await this.setUserAndPack(this.$route.params.packId));
+    this.$nextTick(await this.setData(this.oldCardId));
   },
 });
 </script>

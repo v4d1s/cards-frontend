@@ -6,14 +6,14 @@
       </div>
       <div>
         <BRow>
-          <BCol v-if="cards.length > 0" md="4" class="col-margin">
+          <BCol v-if="cards.length > 0" class="col-margin">
             <BButton
               :href="'/pack/' + packId + '/learning'"
               variant="outline-primary"
               >Изучение</BButton
             >
           </BCol>
-          <BCol md="8">
+          <BCol>
             <BButton
               v-if="isAdmin || userId == authorId"
               :href="'/pack/' + packId + '/card/new'"
@@ -85,7 +85,7 @@
         <BTr>
           <BTh>Вопрос</BTh>
           <BTh>Ответ</BTh>
-          <BTh>Дата создания</BTh>
+          <BTh>Дата</BTh>
           <BTh>Оценка</BTh>
           <BTh>Действия</BTh>
         </BTr>

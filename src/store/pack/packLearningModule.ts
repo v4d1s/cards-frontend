@@ -86,12 +86,27 @@ export const packLearningModule = {
       dispatch("getCards");
     },
     async getUserAndPack({ commit, state }: any, packId: number) {
+      const response = await axios({
+        url: "http://localhost:3000/pack/" + packId,
+        method: "get",
+      });
+
+      if (response.data == "" || response.data.cardsCount <= 0) {
+        router.go(-1);
+        return;
+      }
+
       const token = state.cookies.cookies.get("access_token");
       if (token) {
         const id: number = Object(jwtDecode(token)).id;
         commit("setUserId", id);
       }
       commit("setPackId", packId);
+
+      if (response.data.isPrivate && state.userId != response.data.userId) {
+        router.go(-1);
+        return;
+      }
 
       const nextTime = await axios({
         url:

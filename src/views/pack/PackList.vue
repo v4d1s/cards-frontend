@@ -24,6 +24,7 @@
               id="input-1"
               v-model="newPack"
               placeholder="Название"
+              maxlength="64"
               required
               @input="updateNewPack"
             />
@@ -194,7 +195,7 @@
         <BTr>
           <BTh>Название</BTh>
           <BTh>Автор</BTh>
-          <BTh>Дата создания</BTh>
+          <BTh>Дата</BTh>
           <BTh>Количество карточек</BTh>
           <BTh>Действия</BTh>
         </BTr>
@@ -265,9 +266,9 @@ export default defineComponent({
       isAdmin: (state: any) => state.packList.isAdmin,
     }),
   },
-  mounted() {
-    this.getPacks();
-    this.getUserId();
+  async mounted() {
+    this.$nextTick(await this.getPacks());
+    this.$nextTick(await this.getUserId());
   },
 });
 </script>

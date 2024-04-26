@@ -10,7 +10,7 @@
         @click="redirect(card.image)"
       />
     </BTd>
-    <BTd>{{ card.createdAt.split("T")[0] }}</BTd>
+    <BTd>{{ card.updatedAt.split("T")[0] }}</BTd>
     <BTd>{{
       +(card.gradesList[0].grade / card.gradesList[0].shots).toFixed(2)
     }}</BTd>
