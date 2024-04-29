@@ -75,7 +75,7 @@ export const cardListModule = {
     async getCards({ state, commit }: any) {
       const response = await axios({
         url:
-          process.env.BACKEND +
+          process.env.VUE_APP_BACKEND +
           "pack/" +
           state.packId +
           "/card" +
@@ -106,7 +106,7 @@ export const cardListModule = {
       }
 
       const response = await axios({
-        url: process.env.BACKEND + "pack/" + packId,
+        url: process.env.VUE_APP_BACKEND + "pack/" + packId,
         method: "get",
       });
 

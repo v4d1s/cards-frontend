@@ -50,7 +50,7 @@ export const cardInputModule = {
   actions: {
     async setUserAndPack({ state, commit }: any, packId: number) {
       const response = await axios({
-        url: process.env.BACKEND + "pack/" + packId,
+        url: process.env.VUE_APP_BACKEND + "pack/" + packId,
         method: "get",
       });
       if (response.data == "") {
@@ -73,7 +73,7 @@ export const cardInputModule = {
 
         const card = await axios({
           url:
-            process.env.BACKEND +
+            process.env.VUE_APP_BACKEND +
             "pack/" +
             state.packId +
             "/card/" +
@@ -95,7 +95,7 @@ export const cardInputModule = {
           commit("setUserData", {
             question: state.oldCard.question,
             inputSelect: 1,
-            url: process.env.BACKEND + state.oldCard.image,
+            url: process.env.VUE_APP_BACKEND + state.oldCard.image,
             answer: "",
           });
           commit("setImage", state.oldCard.image);
@@ -121,7 +121,7 @@ export const cardInputModule = {
             commit("setImage", state.newFile);
             await axios({
               url:
-                process.env.BACKEND +
+                process.env.VUE_APP_BACKEND +
                 "pack/" +
                 state.packId +
                 "/card/" +
@@ -141,7 +141,7 @@ export const cardInputModule = {
           } else {
             await axios({
               url:
-                process.env.BACKEND +
+                process.env.VUE_APP_BACKEND +
                 "pack/" +
                 state.packId +
                 "/card/" +
@@ -162,7 +162,7 @@ export const cardInputModule = {
         } else {
           await axios({
             url:
-              process.env.BACKEND +
+              process.env.VUE_APP_BACKEND +
               "pack/" +
               state.packId +
               "/card/" +
@@ -184,7 +184,7 @@ export const cardInputModule = {
             commit("setImage", state.newFile);
           }
           await axios({
-            url: process.env.BACKEND + "pack/" + state.packId + "/card/new",
+            url: process.env.VUE_APP_BACKEND + "pack/" + state.packId + "/card/new",
             method: "post",
             headers: {
               Authorization:
@@ -201,7 +201,7 @@ export const cardInputModule = {
           });
         } else {
           await axios({
-            url: process.env.BACKEND + "pack/" + state.packId + "/card/new",
+            url: process.env.VUE_APP_BACKEND + "pack/" + state.packId + "/card/new",
             method: "post",
             headers: {
               Authorization:

@@ -6,7 +6,7 @@
       <BImg
         class="image"
         fluid
-        :src="process.env.BACKEND + card.image"
+        :src="process.env.VUE_APP_BACKEND + card.image"
         @click="redirect(card.image)"
       />
     </BTd>
@@ -83,12 +83,12 @@ export default defineComponent({
   },
   methods: {
     redirect(id: string) {
-      window.location.href = process.env.BACKEND + id;
+      window.location.href = process.env.VUE_APP_BACKEND + id;
     },
     async deleteCard() {
       await axios({
         url:
-          process.env.BACKEND +
+          process.env.VUE_APP_BACKEND +
           this.card.packId +
           "/card/" +
           this.card.id +

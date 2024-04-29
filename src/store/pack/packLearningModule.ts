@@ -58,14 +58,15 @@ export const packLearningModule = {
     },
     async forceStart({ state, dispatch, commit }: any) {
       const log = await axios({
-        url: process.env.BACKEND + "pack/" + state.packId + "/card/count?",
+        url:
+          process.env.VUE_APP_BACKEND + "pack/" + state.packId + "/card/count?",
         method: "get",
       });
 
       for (const card of log.data) {
         await axios({
           url:
-            process.env.BACKEND +
+            process.env.VUE_APP_BACKEND +
             "pack/" +
             state.packId +
             "/card/" +
@@ -88,7 +89,7 @@ export const packLearningModule = {
     },
     async getUserAndPack({ commit, state }: any, packId: number) {
       const response = await axios({
-        url: process.env.BACKEND + "pack/" + packId,
+        url: process.env.VUE_APP_BACKEND + "pack/" + packId,
         method: "get",
       });
 
@@ -111,7 +112,7 @@ export const packLearningModule = {
 
       const nextTime = await axios({
         url:
-          process.env.BACKEND +
+          process.env.VUE_APP_BACKEND +
           "pack/" +
           state.packId +
           "/card/next?userId=" +
@@ -124,7 +125,7 @@ export const packLearningModule = {
     async getCards({ commit, state }: any) {
       const log = await axios({
         url:
-          process.env.BACKEND +
+          process.env.VUE_APP_BACKEND +
           "pack/" +
           state.packId +
           "/card/learn?userId=" +
@@ -169,7 +170,7 @@ export const packLearningModule = {
 
       await axios({
         url:
-          process.env.BACKEND +
+          process.env.VUE_APP_BACKEND +
           "pack/" +
           state.packId +
           "/card/" +

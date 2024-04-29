@@ -39,7 +39,7 @@ export const authRegisterModule = {
         });
       } else {
         const log = await axios({
-          url: process.env.BACKEND + "auth/register",
+          url: process.env.VUE_APP_BACKEND + "auth/register",
           method: "post",
           data: {
             email: state.userData.email,

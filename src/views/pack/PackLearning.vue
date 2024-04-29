@@ -29,7 +29,7 @@
             v-if="currentCard.image != ''"
             class="image"
             fluid
-            :src="process.env.BACKEND + currentCard.image"
+            :src="process.env.VUE_APP_BACKEND + currentCard.image"
           />
           <hr />
           <h5>Оцените свой ответ</h5>
