@@ -39,7 +39,7 @@ export const authRegisterModule = {
         });
       } else {
         const log = await axios({
-          url: "http://localhost:3000/auth/register",
+          url: process.env.BACKEND + "auth/register",
           method: "post",
           data: {
             email: state.userData.email,

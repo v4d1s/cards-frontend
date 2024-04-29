@@ -29,7 +29,7 @@
             v-if="currentCard.image != ''"
             class="image"
             fluid
-            :src="'http://localhost:3000/' + currentCard.image"
+            :src="process.env.BACKEND + currentCard.image"
           />
           <hr />
           <h5>Оцените свой ответ</h5>

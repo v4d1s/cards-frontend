@@ -92,7 +92,8 @@ export const packListModule = {
     async getPacksGeneral({ commit, state }: any) {
       const response = await axios({
         url:
-          "http://localhost:3000/pack/?page=" +
+          process.env.BACKEND +
+          "pack/?page=" +
           state.page +
           "&sortPacks=" +
           state.sort +
@@ -107,7 +108,8 @@ export const packListModule = {
     async getPacksAll({ commit, state }: any) {
       const response = await axios({
         url:
-          "http://localhost:3000/pack/all?page=" +
+          process.env.BACKEND +
+          "pack/all?page=" +
           state.page +
           "&sortPacks=" +
           state.sort +
@@ -121,7 +123,8 @@ export const packListModule = {
     async getPacksPrivate({ commit, state }: any) {
       const response = await axios({
         url:
-          "http://localhost:3000/pack/?page=" +
+          process.env.BACKEND +
+          "pack/?page=" +
           state.page +
           "&sortPacks=" +
           state.sort +
@@ -137,7 +140,8 @@ export const packListModule = {
     async getPacksPrivateAll({ commit, state }: any) {
       const response = await axios({
         url:
-          "http://localhost:3000/pack/private" +
+          process.env.BACKEND +
+          "pack/private" +
           "?page=" +
           state.page +
           "&sortPacks=" +
@@ -152,7 +156,7 @@ export const packListModule = {
 
     async createPack({ commit, state }: any, newPack: string) {
       await axios({
-        url: "http://localhost:3000/pack",
+        url: process.env.BACKEND + "pack",
         method: "post",
         data: {
           name: newPack,

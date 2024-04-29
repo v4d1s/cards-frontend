@@ -28,7 +28,7 @@ export const authLoginModule = {
     async loginUser({ state, commit }: any) {
       commit("setHaveError", false);
       const log = await axios({
-        url: "http://localhost:3000/auth/login",
+        url: process.env.BACKEND + "auth/login",
         method: "post",
         data: {
           email: state.userData.email,

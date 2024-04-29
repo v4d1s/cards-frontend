@@ -6,7 +6,7 @@
       <BImg
         class="image"
         fluid
-        :src="'http://localhost:3000/' + card.image"
+        :src="process.env.BACKEND + card.image"
         @click="redirect(card.image)"
       />
     </BTd>
@@ -83,12 +83,12 @@ export default defineComponent({
   },
   methods: {
     redirect(id: string) {
-      window.location.href = "http://localhost:3000/" + id;
+      window.location.href = process.env.BACKEND + id;
     },
     async deleteCard() {
       await axios({
         url:
-          "http://localhost:3000/pack/" +
+          process.env.BACKEND +
           this.card.packId +
           "/card/" +
           this.card.id +

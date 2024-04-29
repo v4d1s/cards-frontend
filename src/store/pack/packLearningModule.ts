@@ -58,14 +58,15 @@ export const packLearningModule = {
     },
     async forceStart({ state, dispatch, commit }: any) {
       const log = await axios({
-        url: "http://localhost:3000/pack/" + state.packId + "/card/count?",
+        url: process.env.BACKEND + "pack/" + state.packId + "/card/count?",
         method: "get",
       });
 
       for (const card of log.data) {
         await axios({
           url:
-            "http://localhost:3000/pack/" +
+            process.env.BACKEND +
+            "pack/" +
             state.packId +
             "/card/" +
             card.id +
@@ -87,7 +88,7 @@ export const packLearningModule = {
     },
     async getUserAndPack({ commit, state }: any, packId: number) {
       const response = await axios({
-        url: "http://localhost:3000/pack/" + packId,
+        url: process.env.BACKEND + "pack/" + packId,
         method: "get",
       });
 
@@ -110,7 +111,8 @@ export const packLearningModule = {
 
       const nextTime = await axios({
         url:
-          "http://localhost:3000/pack/" +
+          process.env.BACKEND +
+          "pack/" +
           state.packId +
           "/card/next?userId=" +
           state.userId,
@@ -122,7 +124,8 @@ export const packLearningModule = {
     async getCards({ commit, state }: any) {
       const log = await axios({
         url:
-          "http://localhost:3000/pack/" +
+          process.env.BACKEND +
+          "pack/" +
           state.packId +
           "/card/learn?userId=" +
           state.userId,
@@ -166,7 +169,8 @@ export const packLearningModule = {
 
       await axios({
         url:
-          "http://localhost:3000/pack/" +
+          process.env.BACKEND +
+          "pack/" +
           state.packId +
           "/card/" +
           state.currentCard.id +
