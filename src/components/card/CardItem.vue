@@ -6,7 +6,7 @@
       <BImg
         class="image"
         fluid
-        :src="process.env.VUE_APP_BACKEND + card.image"
+        :src="backend + card.image"
         @click="redirect(card.image)"
       />
     </BTd>
@@ -79,6 +79,8 @@ export default defineComponent({
 
       currentUserId: -1,
       isAdmin: false,
+
+      backend: process.env.VUE_APP_BACKEND,
     };
   },
   methods: {

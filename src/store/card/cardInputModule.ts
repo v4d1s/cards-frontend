@@ -184,7 +184,11 @@ export const cardInputModule = {
             commit("setImage", state.newFile);
           }
           await axios({
-            url: process.env.VUE_APP_BACKEND + "pack/" + state.packId + "/card/new",
+            url:
+              process.env.VUE_APP_BACKEND +
+              "pack/" +
+              state.packId +
+              "/card/new",
             method: "post",
             headers: {
               Authorization:
@@ -201,7 +205,11 @@ export const cardInputModule = {
           });
         } else {
           await axios({
-            url: process.env.VUE_APP_BACKEND + "pack/" + state.packId + "/card/new",
+            url:
+              process.env.VUE_APP_BACKEND +
+              "pack/" +
+              state.packId +
+              "/card/new",
             method: "post",
             headers: {
               Authorization:

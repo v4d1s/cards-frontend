@@ -29,7 +29,7 @@
             v-if="currentCard.image != ''"
             class="image"
             fluid
-            :src="process.env.VUE_APP_BACKEND + currentCard.image"
+            :src="backend + currentCard.image"
           />
           <hr />
           <h5>Оцените свой ответ</h5>
@@ -70,7 +70,6 @@
         </div>
       </div>
       <div v-else>
-        <h4>Изучение недоступно!</h4>
         <div v-if="nextTime > 0">
           <BRow>
             <BCol><h6>Вопросы будут доступны:</h6></BCol>
@@ -116,6 +115,11 @@ import { defineComponent } from "vue";
 import { mapActions, mapState } from "vuex";
 
 export default defineComponent({
+  data() {
+    return {
+      backend: process.env.VUE_APP_BACKEND,
+    };
+  },
   methods: {
     ...mapActions({
       getUserAndPack: "packLearning/getUserAndPack",
