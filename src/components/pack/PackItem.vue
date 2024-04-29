@@ -144,7 +144,7 @@ export default defineComponent({
         privateNew = this.pack.isPrivate;
       }
       await axios({
-        url: process.env.VUE_APP_BACKEND + this.pack.id,
+        url: process.env.VUE_APP_BACKEND + "pack/" + this.pack.id,
         method: "patch",
         data: {
           name: this.newName,
@@ -159,7 +159,7 @@ export default defineComponent({
     },
     async deletePack() {
       await axios({
-        url: process.env.VUE_APP_BACKEND + this.pack.id,
+        url: process.env.VUE_APP_BACKEND + "pack/" + this.pack.id,
         method: "delete",
         headers: {
           Authorization: "Bearer " + this.cookies.cookies.get("access_token"),

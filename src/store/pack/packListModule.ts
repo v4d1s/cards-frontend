@@ -150,8 +150,8 @@ export const packListModule = {
           state.packName,
         method: "get",
       });
-      commit("setPacks", response.data.cardPacks);
-      commit("setRow", response.data.cardPacksTotalCount);
+      commit("setPacks", response.data.rows);
+      commit("setRow", response.data.count);
     },
 
     async createPack({ commit, state }: any, newPack: string) {

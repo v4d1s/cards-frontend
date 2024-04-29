@@ -147,7 +147,7 @@
             <BButtonGroup>
               <BButton
                 :pressed="'true'"
-                v-if="visible == 'general'"
+                v-if="visible == 'all'"
                 variant="outline-secondary"
                 >Все</BButton
               >
