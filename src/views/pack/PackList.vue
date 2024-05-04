@@ -190,27 +190,29 @@
     </div>
     <hr />
 
-    <BTableSimple hover responsive class="table-color">
-      <BThead>
-        <BTr>
-          <BTh>Название</BTh>
-          <BTh>Автор</BTh>
-          <BTh>Дата</BTh>
-          <BTh>Количество карточек</BTh>
-          <BTh>Действия</BTh>
-        </BTr>
-      </BThead>
-      <BTbody>
-        <h4 v-if="isLoading">Идет загрузка...</h4>
-        <pack-item v-for="pack in packs" :key="pack.id" :pack="pack" />
-      </BTbody>
-    </BTableSimple>
+    <BOverlay :show="isLoading" rounded="sm">
+      <BTableSimple hover responsive class="table-color">
+        <BThead>
+          <BTr>
+            <BTh>Название</BTh>
+            <BTh>Автор</BTh>
+            <BTh>Дата</BTh>
+            <BTh>Количество карточек</BTh>
+            <BTh>Действия</BTh>
+          </BTr>
+        </BThead>
+        <BTbody>
+          <pack-item v-for="pack in packs" :key="pack.id" :pack="pack" />
+        </BTbody>
+      </BTableSimple>
+      <h4 v-if="isLoading && packs.length == 0">Идет загрузка...</h4>
+    </BOverlay>
     <h3 class="error-color" v-if="packs.length == 0 && !isLoading">
-      Наборы с карточками отсутствуют...
+      Наборы с карточками отсутствуют
     </h3>
 
     <BPagination
-      v-else
+      v-if="packs.length > 0"
       align="center"
       :total-rows="rows"
       :per-page="10"

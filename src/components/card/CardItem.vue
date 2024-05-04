@@ -1,7 +1,11 @@
 <template>
   <BTr>
-    <BTh><vue-latex :expression="card.question" /></BTh>
-    <BTd v-if="card.image == ''"><vue-latex :expression="card.answer" /></BTd>
+    <BTh
+      ><vue-latex :expression="'\\text{' + card.question + '}'" display-mode
+    /></BTh>
+    <BTd v-if="card.image == ''"
+      ><vue-latex :expression="card.answer" display-mode
+    /></BTd>
     <BTd v-else>
       <BImg
         class="image"
@@ -91,6 +95,7 @@ export default defineComponent({
       await axios({
         url:
           process.env.VUE_APP_BACKEND +
+          "pack/" +
           this.card.packId +
           "/card/" +
           this.card.id +

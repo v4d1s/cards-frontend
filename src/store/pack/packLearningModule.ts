@@ -19,6 +19,8 @@ export const packLearningModule = {
     modal: false,
 
     currentTime: Date.now(),
+
+    isLoading: true,
   }),
   mutations: {
     setCards(state: any, newCards: any) {
@@ -50,6 +52,9 @@ export const packLearningModule = {
     },
     setCurrentTime(state: any, newTime: number) {
       state.currentTime = newTime;
+    },
+    setIsLoading(state: any, newLoading: boolean) {
+      state.isLoading = newLoading;
     },
   },
   actions: {
@@ -134,6 +139,7 @@ export const packLearningModule = {
       });
       commit("setCards", log.data.rows);
       commit("setCount", log.data.count);
+      commit("setIsLoading", false);
 
       if (state.count > 0) {
         commit("setCurrentCard", state.cards[state.current]);

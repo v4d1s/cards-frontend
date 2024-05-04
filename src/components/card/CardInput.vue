@@ -3,22 +3,30 @@
     <BFormGroup id="input-group-1">
       <div class="flex-start-end">
         <h5>Введите вопрос:</h5>
-        <div class="hint-text">"\ " — пробел, "\\ " — новая строка</div>
       </div>
-      <textarea
+      <BFormInput
         id="input-1"
         placeholder="Вопрос"
         class="textarea-input"
         v-model="userData.question"
         required
-      ></textarea>
+        maxlength="128"
+      />
       <hr />
-      <vue-latex :expression="userData.question" display-mode />
+      <BCard>
+        <vue-latex
+          :expression="'\\text{' + userData.question + '}'"
+          display-mode
+        />
+      </BCard>
     </BFormGroup>
     <hr />
     <BFormGroup id="input-group-2">
       <div class="flex-start-end">
         <h5>Введите ответ:</h5>
+        <h6 class="hint-text">"\text{*текст*}" — текст</h6>
+        <h6 class="hint-text">"\ " — пробел</h6>
+        <h6 class="hint-text">"\\ " — новая строка</h6>
         <BFormSelect
           class="select-size"
           id="input-2"
@@ -28,15 +36,17 @@
         />
       </div>
       <div v-if="userData.inputSelect == 0">
-        <textarea
+        <BFormTextarea
           id="input-2"
           placeholder="Ответ"
           v-model="userData.answer"
           class="textarea-input"
           required
-        ></textarea>
+        />
         <hr />
-        <vue-latex :expression="userData.answer" display-mode />
+        <BCard>
+          <vue-latex :expression="userData.answer" display-mode />
+        </BCard>
       </div>
       <div v-if="userData.inputSelect == 1">
         <div v-if="userData.url">

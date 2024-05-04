@@ -45,8 +45,8 @@ export const packListModule = {
     setRow(state: any, row: number) {
       state.row = row;
     },
-    setIsLoading(state: any) {
-      state.isLoading = false;
+    setIsLoading(state: any, newLoading: boolean) {
+      state.isLoading = newLoading;
     },
     setVisibility(state: any, visibility: string) {
       state.visible = visibility;
@@ -75,7 +75,8 @@ export const packListModule = {
       dispatch("getPacks");
     },
 
-    getPacks({ dispatch, state }: any) {
+    getPacks({ dispatch, state, commit }: any) {
+      commit("setIsLoading", true);
       if (state.visible == "general") {
         dispatch("getPacksGeneral");
       }
@@ -103,7 +104,7 @@ export const packListModule = {
       });
       commit("setPacks", response.data.cardPacks);
       commit("setRow", response.data.cardPacksTotalCount);
-      commit("setIsLoading");
+      commit("setIsLoading", false);
     },
     async getPacksAll({ commit, state }: any) {
       const response = await axios({
@@ -119,6 +120,7 @@ export const packListModule = {
       });
       commit("setPacks", response.data.rows);
       commit("setRow", response.data.count);
+      commit("setIsLoading", false);
     },
     async getPacksPrivate({ commit, state }: any) {
       const response = await axios({
@@ -136,6 +138,7 @@ export const packListModule = {
       });
       commit("setPacks", response.data.cardPacks);
       commit("setRow", response.data.cardPacksTotalCount);
+      commit("setIsLoading", false);
     },
     async getPacksPrivateAll({ commit, state }: any) {
       const response = await axios({
@@ -152,6 +155,7 @@ export const packListModule = {
       });
       commit("setPacks", response.data.rows);
       commit("setRow", response.data.count);
+      commit("setIsLoading", false);
     },
 
     async createPack({ commit, state }: any, newPack: string) {

@@ -53,8 +53,8 @@ export const cardListModule = {
     setRow(state: any, row: number) {
       state.row = row;
     },
-    setIsLoading(state: any) {
-      state.isLoading = false;
+    setIsLoading(state: any, newLoading: boolean) {
+      state.isLoading = newLoading;
     },
   },
   actions: {
@@ -73,6 +73,7 @@ export const cardListModule = {
     },
 
     async getCards({ state, commit }: any) {
+      commit("setIsLoading", true);
       const response = await axios({
         url:
           process.env.VUE_APP_BACKEND +
@@ -93,7 +94,7 @@ export const cardListModule = {
       });
       commit("setCards", response.data.cards);
       commit("setRow", response.data.cardsTotalCount);
-      commit("setIsLoading");
+      commit("setIsLoading", false);
     },
 
     async getUserAndPack({ commit, state, dispatch }: any, packId: number) {
