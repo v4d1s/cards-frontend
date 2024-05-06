@@ -151,24 +151,33 @@ export const packLearningModule = {
     },
     async setNewGrade({ state, dispatch, commit }: any, newGrade: number) {
       let nextTime: number = state.currentTime;
+      let newCombo: number = state.currentCard.gradesList.combo;
+      let newLastGrade: number = state.currentCard.gradesList.lastGrade;
+
+      if (newLastGrade != newGrade) {
+        newLastGrade = newGrade;
+        newCombo = 0;
+      }
 
       switch (newGrade) {
         case 1:
-          nextTime += 1000 * 60;
+          nextTime += 1000 * 60 * newCombo + 1000 * 60;
           break;
         case 2:
-          nextTime += 1000 * 60 * 10;
+          nextTime += 1000 * 60 * 10 * newCombo + 1000 * 60 * 10;
           break;
         case 3:
-          nextTime += 1000 * 60 * 60;
+          nextTime += 1000 * 60 * 60 * 2 * newCombo + 1000 * 60 * 60 * 2;
           break;
         case 4:
-          nextTime += 1000 * 60 * 60 * 5;
+          nextTime += 1000 * 60 * 60 * 10 * newCombo + 1000 * 60 * 60 * 10;
           break;
         default:
-          nextTime += 1000 * 60 * 60 * 24;
+          nextTime += 1000 * 60 * 60 * 24 * newCombo + 1000 * 60 * 60 * 24;
           break;
       }
+
+      newCombo++;
 
       if (nextTime < state.nextTime) {
         commit("setNextTime", nextTime);
@@ -187,6 +196,8 @@ export const packLearningModule = {
         data: {
           grade: newGrade,
           nextTime: nextTime,
+          combo: newCombo,
+          lastGrade: newLastGrade,
         },
         headers: {
           Authorization: "Bearer " + state.cookies.cookies.get("access_token"),
