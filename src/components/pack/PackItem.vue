@@ -14,13 +14,6 @@
         class="margin-button"
         >Изучить</BButton
       >
-      <BButton
-        :href="'/login'"
-        variant="success"
-        v-if="currentUserId == 0"
-        class="margin-button"
-        >Войдите, чтобы изучить</BButton
-      >
       <div v-if="isAdmin || currentUserId == pack.userId">
         <BButton
           class="margin-button"
