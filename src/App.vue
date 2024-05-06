@@ -1,12 +1,13 @@
 <template>
   <div class="navbar-color">
-    <BNavbar class="container">
+    <BNavbar toggleable="lg" class="container">
       <BNavbarBrand href="/packs"
         ><BImg fluid class="logo" :src="require(`../public/logo.png`)"
       /></BNavbarBrand>
       <BNavbarToggle target="nav-collapse" />
       <BCollapse id="nav-collapse" is-nav>
         <BNavbarNav class="ms-auto mb-2 mb-lg-0">
+          <BNavItem href="/about">О проекте</BNavItem>
           <BNavItemDropdown right>
             <template #button-content>
               <div v-if="name">

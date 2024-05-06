@@ -6,8 +6,14 @@ import CardList from "@/views/card/CardList.vue";
 import CardNewItem from "@/views/card/CardNewItem.vue";
 import CardEditItem from "@/views/card/CardEditItem.vue";
 import PackLearning from "@/views/pack/PackLearning.vue";
+import AboutView from "@/views/about/AboutView.vue";
 
 const routes: Array<RouteRecordRaw> = [
+  {
+    path: "/about",
+    name: "about",
+    component: AboutView,
+  },
   {
     path: "/login",
     name: "login",
