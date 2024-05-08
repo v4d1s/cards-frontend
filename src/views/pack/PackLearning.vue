@@ -84,18 +84,18 @@
               >
             </BRow>
             <BButton variant="outline-danger" @click="changeModal(true)"
-              >Принудительно начать!</BButton
+              >Сбросить таймеры</BButton
             >
             <BModal
               centered
               v-model="modal"
-              title="Принудительно начать?"
+              title="Точно сбросить?"
               hide-header-close
               hideFooter
             >
               <p>
-                Вы действительно хотите начать изучение? Все ваши таймеры
-                сбросятся, что может плохо сказаться на обучении!
+                Вы действительно хотите сбросить свои таймеры? Это может плохо
+                сказаться на обучении!
               </p>
               <div class="flex-start-end">
                 <div>
