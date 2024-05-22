@@ -125,7 +125,10 @@
               <BButton
                 v-else
                 variant="outline-secondary"
-                @click="changeVisibility('private')"
+                @click="
+                  changeVisibility('private');
+                  currentPage = 1;
+                "
                 >Свои</BButton
               >
 
@@ -138,7 +141,10 @@
               <BButton
                 v-else
                 variant="outline-secondary"
-                @click="changeVisibility('general')"
+                @click="
+                  changeVisibility('general');
+                  currentPage = 1;
+                "
                 >Общие</BButton
               >
             </BButtonGroup>
@@ -154,7 +160,10 @@
               <BButton
                 v-else
                 variant="outline-secondary"
-                @click="changeVisibility('all')"
+                @click="
+                  changeVisibility('all');
+                  currentPage = 1;
+                "
                 >Все</BButton
               >
 
@@ -167,7 +176,10 @@
               <BButton
                 v-else
                 variant="outline-secondary"
-                @click="changeVisibility('private_all')"
+                @click="
+                  changeVisibility('private_all');
+                  currentPage = 1;
+                "
                 >Приватные</BButton
               >
 
@@ -180,7 +192,10 @@
               <BButton
                 v-else
                 variant="outline-secondary"
-                @click="changeVisibility('general')"
+                @click="
+                  changeVisibility('general');
+                  currentPage = 1;
+                "
                 >Общие</BButton
               >
             </BButtonGroup>

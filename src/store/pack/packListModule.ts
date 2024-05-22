@@ -68,6 +68,7 @@ export const packListModule = {
     changeVisibility({ commit, dispatch }: any, visibility: string) {
       commit("setPackName", "");
       commit("setVisibility", visibility);
+      commit("setPage", 1);
       dispatch("getPacks");
     },
     changeSort({ commit, dispatch }: any, sort: string) {

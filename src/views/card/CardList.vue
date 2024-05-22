@@ -6,7 +6,7 @@
       </div>
       <div>
         <BRow>
-          <BCol v-if="cards.length > 0" class="col-margin">
+          <BCol v-if="cards.length > 0 && userId > 0" class="col-margin">
             <BButton
               :href="'/pack/' + packId + '/learning'"
               variant="outline-primary"
